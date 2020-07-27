@@ -4,8 +4,8 @@ import kotlin.properties.Delegates
 import kotlin.properties.ObservableProperty
 
 object PlayerState {
-    val maxHealthlisteners = ArrayList<(old: Int,new: Int) -> Unit>()
-    val healthListeners = ArrayList<(old: Int, new: Int) -> Unit>()
+    val maxHealthlisteners = ArrayList<() -> Unit>()
+    val healthListeners = ArrayList<() -> Unit>()
     val currencyListeners = ArrayList<(old: Int, new: Int) -> Unit>()
     val manaListeners = ArrayList<(old: Int, new: Int) -> Unit>()
     val maxManaListeners = ArrayList<(old: Int, new: Int) -> Unit>()
@@ -17,13 +17,13 @@ object PlayerState {
     var maxHealth: Int by Delegates.observable(120) { property, oldValue, newValue ->
         // do your stuff here
         maxHealthlisteners.forEach {
-            it(oldValue,newValue)
+            it()
         }
     }
     var health: Int by Delegates.observable(120) { property, oldValue, newValue ->
         // do your stuff here
-        maxHealthlisteners.forEach {
-            it(oldValue, newValue)
+        healthListeners.forEach {
+            it()
         }
     }
     var currency: Int by Delegates.observable(0) { property, oldValue, newValue ->
