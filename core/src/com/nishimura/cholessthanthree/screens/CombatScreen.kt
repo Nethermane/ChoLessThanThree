@@ -11,9 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ExtendViewport
+import com.badlogic.gdx.utils.viewport.FitViewport
 import com.nishimura.cholessthanthree.Assets
 import com.nishimura.cholessthanthree.MyGdxGame
 import com.nishimura.cholessthanthree.PlayerState
+import com.nishimura.cholessthanthree.actors.Card
+import com.nishimura.cholessthanthree.actors.CombatDeckManager
 import com.nishimura.cholessthanthree.actors.HealthBar
 import ktx.app.KtxScreen
 
@@ -22,7 +25,7 @@ class CombatScreen(val game: Game) : KtxScreen {
     val cam: OrthographicCamera = OrthographicCamera().apply {
         setToOrtho(false, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
     }
-    val viewport = ExtendViewport(MyGdxGame.WIDTH, MyGdxGame.HEIGHT)
+    val viewport = FitViewport(MyGdxGame.WIDTH, MyGdxGame.HEIGHT)
     val stage = Stage(viewport, PolygonSpriteBatch())
     val deckTextButton: TextButton = TextButton("Deck", TextButton.TextButtonStyle(null, null, null, Assets.font)).also {
         it.setPosition(0f, MyGdxGame.HEIGHT - it.height)
@@ -31,8 +34,8 @@ class CombatScreen(val game: Game) : KtxScreen {
         it.setPosition(deckTextButton.x + deckTextButton.width, MyGdxGame.HEIGHT - it.height)
 
     }
+    val combatDeckManager = CombatDeckManager()
     init {
-        stage.isDebugAll = true
         deckTextButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 PlayerState.health--
@@ -41,6 +44,8 @@ class CombatScreen(val game: Game) : KtxScreen {
         stage.addActor(Image(Assets.background).also { it.setSize(MyGdxGame.WIDTH, MyGdxGame.HEIGHT) })
         stage.addActor(deckTextButton)
         stage.addActor(health)
+        combatDeckManager.beginTurn()
+        combatDeckManager.hand.cards.forEach { stage.addActor(it) }
         Gdx.input.inputProcessor = stage
     }
 

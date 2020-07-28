@@ -21,11 +21,16 @@ object Assets {
     private const val smallFont = "stickman_small.ttf"
     private const val bigFont = "stickman_big.ttf"
     const val backgroundString = "test"
+    const val cardString = "cardTemp"
     val assetManager: AssetManager = AssetManager().also {  it.registerFreeTypeFontLoaders()}
     val atlas: TextureAtlas by assetManager.load(imagesPack)
     val background by lazy {
         assetManager.finishLoadingAsset<TextureAtlas>(imagesPack)
         atlas.findRegion(backgroundString)
+    }
+    val card by lazy {
+        assetManager.finishLoadingAsset<TextureAtlas>(imagesPack)
+        atlas.findRegion(cardString)
     }
 //    val font: BitmapFont by assetManager.loadFreeTypeFont(mainFontString) {
 //        this.color = Color.BLACK

@@ -1,7 +1,9 @@
 package com.nishimura.cholessthanthree
 
+import com.nishimura.cholessthanthree.actors.Card
+import com.nishimura.cholessthanthree.effects.Stat
+import com.nishimura.cholessthanthree.effects.Status
 import kotlin.properties.Delegates
-import kotlin.properties.ObservableProperty
 
 object PlayerState {
     val maxHealthlisteners = ArrayList<() -> Unit>()
@@ -10,7 +12,10 @@ object PlayerState {
     val manaListeners = ArrayList<(old: Int, new: Int) -> Unit>()
     val maxManaListeners = ArrayList<(old: Int, new: Int) -> Unit>()
 
-
+    var handSize: Int = 12
+    var baseDrawAmount: Int = 5
+    val drawModifiers: List<Status> = emptyList()
+    fun getPlayerDraw() = baseDrawAmount + drawModifiers.sumBy { it.intensity }
     val deckListener = ArrayList<(oldDeck: ArrayList<Card>, newDeck: ArrayList<Card>) -> Unit>()
 
     // fires off every time value of the property changes

@@ -1,9 +1,11 @@
 package com.nishimura.cholessthanthree
 
+import com.nishimura.cholessthanthree.actors.Card
+
 /**
  * Class to manage the deck as an abstraction outside of combat
  */
-class DeckManager {
+object DeckManager {
     private val cards = ArrayList<Card>()
     init {
         makeDefaultDeck()
