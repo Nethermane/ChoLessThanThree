@@ -4,6 +4,7 @@ package com.nishimura.cholessthanthree.screens
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -23,7 +24,7 @@ class MenuScreen(val game: Game) : KtxScreen {
     }
     val viewport = ExtendViewport(MyGdxGame.WIDTH,MyGdxGame.HEIGHT)
     val stage = Stage(viewport)
-    val playButton: TextButton = TextButton("Play",TextButton.TextButtonStyle(null,null,null, Assets.font)).also {
+    val playButton: TextButton = TextButton("Play",TextButton.TextButtonStyle(null,null,null, Assets.font).apply{fontColor = Color.BLACK}).also {
         it.setPosition(MyGdxGame.WIDTH/20, MyGdxGame.HEIGHT/2-it.height/2f)
     }
 

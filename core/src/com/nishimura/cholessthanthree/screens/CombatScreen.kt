@@ -2,6 +2,7 @@ package com.nishimura.cholessthanthree.screens
 
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
@@ -28,7 +29,7 @@ class CombatScreen(val game: Game) : KtxScreen {
     }
     val viewport = FitViewport(MyGdxGame.WIDTH, MyGdxGame.HEIGHT)
     val stage = Stage(viewport, PolygonSpriteBatch())
-    val deckTextButton: TextButton = TextButton("Deck", TextButton.TextButtonStyle(null, null, null, Assets.font)).also {
+    val deckTextButton: TextButton = TextButton("Deck", TextButton.TextButtonStyle(null, null, null, Assets.font).apply{this.fontColor= Color.BLACK}).also {
         it.setPosition(0f, MyGdxGame.HEIGHT - it.height)
     }
     var health: HealthBar = HealthBar().also {
