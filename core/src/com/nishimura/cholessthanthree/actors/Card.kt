@@ -1,22 +1,15 @@
 package com.nishimura.cholessthanthree.actors
 
-import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.actions.Actions
-import com.badlogic.gdx.scenes.scene2d.ui.Button
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
-import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.scenes.scene2d.utils.DragListener
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
-import com.badlogic.gdx.utils.Scaling
+import com.badlogic.gdx.utils.Align
 import com.nishimura.cholessthanthree.Assets
 import com.nishimura.cholessthanthree.MyGdxGame
-import com.nishimura.cholessthanthree.PlayerState
 import com.nishimura.cholessthanthree.PlayerState.handSize
 import com.nishimura.cholessthanthree.Targetable
+import kotlin.math.max
+import kotlin.math.min
+
 
 data class Card(private var cost: Int,
                 private var onPlay: Effect? = null,
@@ -26,8 +19,9 @@ data class Card(private var cost: Int,
 ): Targetable, Image(Assets.card) {
     var isDown = false
     init {
-        width = ((MyGdxGame.WIDTH * 0.9f / handSize))
-        height = (MyGdxGame.WIDTH * 0.9f / handSize * 2)
+        setSize((MyGdxGame.WIDTH * 0.9f / handSize),(MyGdxGame.WIDTH * 0.9f / handSize * 2))
+        setOrigin(width/2f,height/2f)
+
     }
 
     //When this card is brought to the hand
@@ -54,4 +48,15 @@ data class Card(private var cost: Int,
     class OffensiveEffect() : Effect()
     class DefensiveEffect() : Effect()
     class UtilityEffect() : Effect()
+
+    fun moveTo(x: Float, y: Float) {
+        val minX = width*scaleX/2
+        val maxX: Float = MyGdxGame.WIDTH - (width*scaleX)/2
+        val minY = height*scaleY/2
+        val maxY: Float = MyGdxGame.HEIGHT - (height*scaleY)/2
+        val newX = min(maxX, max(x, minX))
+        val newY = min(maxY, max(y, minY))
+        println("height: $height width: $width x:$newX  y: $newY mouseX: $x mouseY: $y")
+        setPosition(newX, newY, Align.center)
+    }
 }

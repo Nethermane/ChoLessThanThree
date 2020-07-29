@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
@@ -41,6 +42,7 @@ class CombatScreen(val game: Game) : KtxScreen {
                 PlayerState.health--
             }
         })
+        stage.isDebugAll = true
         stage.addActor(Image(Assets.background).also { it.setSize(MyGdxGame.WIDTH, MyGdxGame.HEIGHT) })
         stage.addActor(deckTextButton)
         stage.addActor(health)
