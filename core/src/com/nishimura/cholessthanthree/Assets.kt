@@ -23,7 +23,7 @@ object Assets {
     private const val smallFont = "stickman_small.ttf"
     private const val bigFont = "stickman_big.ttf"
     const val backgroundString = "paper"
-    const val cardString = "cardTemp"
+    const val cardString = "cardBack"
     const val cursorString = "color_cursor"
     val assetManager: AssetManager = AssetManager().also { it.registerFreeTypeFontLoaders() }
     val atlas: TextureAtlas by assetManager.load(imagesPack)

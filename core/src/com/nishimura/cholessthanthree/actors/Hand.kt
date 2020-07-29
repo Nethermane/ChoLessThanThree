@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
@@ -27,7 +28,8 @@ class Hand {
     private val targettingCursor = Gdx.graphics.newCursor(Assets.targetCircle,
             Assets.targetCircle.width/2,
             Assets.targetCircle.width/2)
-    fun setCards(newCards: ArrayList<Card>) {
+    fun setCards(newCards: ArrayList<Card>, stage: Stage) {
+        cards.forEach { it.remove() }
         cards.clear()
         cards.addAll(newCards)
         for ((index,card) in cards.withIndex()) {
@@ -103,6 +105,7 @@ class Hand {
                 }
             })
         }
+        cards.forEach { stage.addActor(it) }
     }
     fun resetCards() {
         for(card in cards) {

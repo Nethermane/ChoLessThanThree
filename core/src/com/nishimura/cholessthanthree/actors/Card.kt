@@ -17,9 +17,13 @@ data class Card(private var cost: Int,
                 private var onDiscard: Effect? = null,
                 private var targets: List<Class<Targetable>> = emptyList()
 ): Targetable, Image(Assets.card) {
+    companion object {
+        val cardWidth = (MyGdxGame.WIDTH * 0.9f / handSize)
+        val cardHeight = cardWidth*2
+    }
     var isDown = false
     init {
-        setSize((MyGdxGame.WIDTH * 0.9f / handSize),(MyGdxGame.WIDTH * 0.9f / handSize * 2))
+        setSize(cardWidth, cardHeight)
         setOrigin(width/2f,height/2f)
 
     }
@@ -56,7 +60,6 @@ data class Card(private var cost: Int,
         val maxY: Float = MyGdxGame.HEIGHT - (height*scaleY)/2
         val newX = min(maxX, max(x, minX))
         val newY = min(maxY, max(y, minY))
-        println("height: $height width: $width x:$newX  y: $newY mouseX: $x mouseY: $y")
         setPosition(newX, newY, Align.center)
     }
 }
