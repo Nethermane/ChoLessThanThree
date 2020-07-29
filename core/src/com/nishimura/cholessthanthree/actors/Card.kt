@@ -22,6 +22,7 @@ data class Card(private var cost: Int,
         val cardHeight = cardWidth*2
     }
     var isDown = false
+    var isBeingDrawnFromDeck = true
     init {
         setSize(cardWidth, cardHeight)
         setOrigin(width/2f,height/2f)

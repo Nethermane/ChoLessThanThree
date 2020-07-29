@@ -2,33 +2,32 @@ package com.nishimura.cholessthanthree
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.utils.Align
-
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.nishimura.cholessthanthree.PlayerState.getPlayerDraw
 import com.nishimura.cholessthanthree.PlayerState.handSize
+import com.nishimura.cholessthanthree.actions.flipIn
+import com.nishimura.cholessthanthree.actions.flipOut
 import com.nishimura.cholessthanthree.actors.Card
 import com.nishimura.cholessthanthree.actors.Hand
-import kotlin.properties.Delegates
 
 class CombatDeckManager(val stage: Stage, private val currentHand: ArrayList<Card> = ArrayList(),
-                        private val _discardPile: ArrayList<Card> = ArrayList()) {
+                        private val discardPile: ArrayList<Card> = ArrayList()) {
     val drawPileButton = Image(Assets.card).apply {
         setSize(Card.cardWidth, Card.cardHeight)
         setPosition(width / 4, width / 4)
     }
     private var drawPile: ArrayList<Card> = DeckManager.getCardsForPlayDeckManager()
-    val drawPileLabel = Label(drawPile.size.toString(), Label.LabelStyle(Assets.healthFont, Color.RED)).apply {
-        setPosition(drawPileButton.x + drawPileButton.width/2-width/2, drawPileButton.y + drawPileButton.height/2-height/2)
+    val drawPileLabel = Label(drawPile.size.toString(),
+            Label.LabelStyle(Assets.healthFont, Color.RED)).apply {
+        setPosition(drawPileButton.x + drawPileButton.width / 2 - width / 2,
+                drawPileButton.y + drawPileButton.height / 2 - height / 2)
     }
 
-    val discardPile by Delegates.observable(_discardPile) { property, oldValue, newValue ->
-        //update label
-    }
 
     val hand = Hand()
-
 
 
     init {
@@ -70,6 +69,7 @@ class CombatDeckManager(val stage: Stage, private val currentHand: ArrayList<Car
                 break@drawPhase
             }
         }
+        currentHand.forEach { it.setPosition(drawPileButton.x,drawPileButton.y) }
         hand.setCards(currentHand, stage)
     }
 
