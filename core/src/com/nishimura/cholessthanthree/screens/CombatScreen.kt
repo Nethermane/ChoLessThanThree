@@ -40,7 +40,6 @@ class CombatScreen(val game: Game) : KtxScreen {
                 PlayerState.health--
             }
         })
-        stage.isDebugAll = true
         stage.addActor(Image(Assets.background).also { it.setSize(MyGdxGame.WIDTH, MyGdxGame.HEIGHT) })
         stage.addActor(deckTextButton)
         stage.addActor(health)

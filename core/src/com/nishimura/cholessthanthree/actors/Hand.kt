@@ -30,17 +30,18 @@ class Hand {
         cards.forEach { it.remove() }
         cards.clear()
         cards.addAll(newCards)
+        //TODO: Refactor this all into the Card class
         cards.forEachIndexed { index, card ->
             val absIndexFromMiddle = abs(cards.size / 2 - index)
             val startingRotation = ((   180f / 16f * (-(index - cards.size / 2))))
-            val restingX = MyGdxGame.WIDTH * 0.3f + index.toFloat() / cards.size * MyGdxGame.WIDTH * 0.4f
-            val restingY = -absIndexFromMiddle * height / cards.size
+            card.restingX = MyGdxGame.WIDTH * 0.3f + index.toFloat() / cards.size * MyGdxGame.WIDTH * 0.4f
+            card.restingY = -absIndexFromMiddle * height / cards.size
             card.addListener(object : DragListener() {
                 override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int,
                                    fromActor: Actor?) {
                     if (!anyDown && !card.isBeingDrawnFromDeck) {
                         card.addAction(
-                                Actions.parallel(Actions.moveTo(restingX- Card.cardWidth/1.5f/2, 0f, cardSelectAnimationDuration),
+                                Actions.parallel(Actions.moveTo(card.restingX- Card.cardWidth/1.5f/2, 0f, cardSelectAnimationDuration),
                                         Actions.sizeTo(Card.cardWidth*1.5f, Card.cardHeight*1.5f, cardSelectAnimationDuration),
                                         Actions.rotateTo(0f, cardSelectAnimationDuration)))
                         card.zIndex += 1
@@ -52,7 +53,7 @@ class Hand {
                     if (!anyDown && !card.isBeingDrawnFromDeck) {
                         card.clearActions()
                         card.addAction(Actions.parallel(Actions.sizeTo(Card.cardWidth, Card.cardHeight, cardSelectAnimationDuration),
-                                Actions.moveTo(restingX, restingY, cardSelectAnimationDuration),
+                                Actions.moveTo(card.restingX, card.restingY, cardSelectAnimationDuration),
                                 Actions.rotateTo(startingRotation, cardSelectAnimationDuration)))
                         card.zIndex -= 1
                     }
@@ -101,8 +102,8 @@ class Hand {
             val sizeUpAction = Actions.sizeTo(Card.cardWidth,Card.cardHeight, resolutionTime)
             val fadeInAction = Actions.fadeIn(resolutionTime)
             val moveAction = Actions.sequence(
-                    Actions.moveTo(restingX / 2, restingY, resolutionTime / 2),
-                    Actions.moveTo(restingX, restingY, resolutionTime / 2)
+                    Actions.moveTo(card.restingX / 2, card.restingY, resolutionTime / 2),
+                    Actions.moveTo(card.restingX, card.restingY, resolutionTime / 2)
             )
             val rotationAction = Actions.rotateTo(startingRotation, resolutionTime)
             val waitAction = Actions.delay(resolutionTime * index)

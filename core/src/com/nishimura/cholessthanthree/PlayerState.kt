@@ -15,13 +15,20 @@ object PlayerState {
     val drawPileListeners = ArrayList<(old: List<Card>, new: List<Card>) -> Unit>()
     val discardPileListeners = ArrayList<(old: List<Card>, new: List<Card>) -> Unit>()
     val currentHandListeners = ArrayList<(old: List<Card>, new: List<Card>) -> Unit>()
-
+    val deckListener = ArrayList<(oldDeck: List<Card>, newDeck: List<Card>) -> Unit>()
 
 
 
     private val _currentHand: ArrayList<Card> = ArrayList()
     private val _discardPile: ArrayList<Card> = ArrayList()
     private val _drawPile: ArrayList<Card> = DeckManager.getCardsForPlayDeckManager()
+
+    var deck: List<Card> by Delegates.observable(DeckManager.cards) { property, oldValue, newValue ->
+        // do your stuff here
+        deckListener.forEach {
+            it(oldValue,newValue)
+        }
+    }
     var drawPile: List<Card> by Delegates.observable<List<Card>>(_drawPile) { property, oldValue, newValue ->
         drawPileListeners.forEach {
             it(oldValue,newValue)
@@ -67,7 +74,6 @@ object PlayerState {
         drawPile = _drawPile
     }
 
-    val deckListener = ArrayList<(oldDeck: ArrayList<Card>, newDeck: ArrayList<Card>) -> Unit>()
 
     // fires off every time value of the property changes
     var maxHealth: Int by Delegates.observable(120) { property, oldValue, newValue ->
@@ -98,12 +104,6 @@ object PlayerState {
         // do your stuff here
         manaListeners.forEach {
             it(oldValue, newValue)
-        }
-    }
-    var deck: ArrayList<Card> by Delegates.observable(ArrayList()) { property, oldValue, newValue ->
-        // do your stuff here
-        deckListener.forEach {
-            it(oldValue,newValue)
         }
     }
 }
