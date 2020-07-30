@@ -26,13 +26,13 @@ class Hand {
             Assets.targetCircle.width / 2,
             Assets.targetCircle.width / 2)
 
-    fun setCards(newCards: ArrayList<Card>, stage: Stage) {
+    fun setCards(newCards: List<Card>, stage: Stage) {
         cards.forEach { it.remove() }
         cards.clear()
         cards.addAll(newCards)
         cards.forEachIndexed { index, card ->
             val absIndexFromMiddle = abs(cards.size / 2 - index)
-            val startingRotation = ((180f / 16f * (-(index - cards.size / 2))))
+            val startingRotation = ((   180f / 16f * (-(index - cards.size / 2))))
             val restingX = MyGdxGame.WIDTH * 0.3f + index.toFloat() / cards.size * MyGdxGame.WIDTH * 0.4f
             val restingY = -absIndexFromMiddle * height / cards.size
             card.addListener(object : DragListener() {
@@ -97,21 +97,17 @@ class Hand {
             //region drawFromDeckActions
             val resolutionTime = 0.25f
             stage.addActor(card)
-            val flipAction = Actions.sequence(
-                    Actions.show(),
-                    Actions.run { card.toFront() },
-                    flipOut(card.x, card.width, resolutionTime / 8f),
-                    Actions.run { card.drawable = TextureRegionDrawable(Assets.cardFront) },
-                    flipIn(card.x, card.width, resolutionTime / 8f)
-            )
+            card.setSize(0f,0f)
+            val sizeUpAction = Actions.sizeTo(Card.cardWidth,Card.cardHeight, resolutionTime)
+            val fadeInAction = Actions.fadeIn(resolutionTime)
             val moveAction = Actions.sequence(
-                    Actions.moveTo(restingX / 2, MyGdxGame.HEIGHT / 8f, resolutionTime / 2),
+                    Actions.moveTo(restingX / 2, restingY, resolutionTime / 2),
                     Actions.moveTo(restingX, restingY, resolutionTime / 2)
             )
             val rotationAction = Actions.rotateTo(startingRotation, resolutionTime)
             val waitAction = Actions.delay(resolutionTime * index)
             val combinedAction = Actions.sequence(waitAction,
-                    Actions.parallel(flipAction, moveAction, rotationAction),
+                    Actions.parallel(moveAction, rotationAction, sizeUpAction, fadeInAction),
                     Actions.run{card.isBeingDrawnFromDeck = false}
             )
             card.addAction(combinedAction)

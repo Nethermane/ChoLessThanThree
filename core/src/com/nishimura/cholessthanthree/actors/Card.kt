@@ -1,14 +1,17 @@
 package com.nishimura.cholessthanthree.actors
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.utils.Align
 import com.nishimura.cholessthanthree.Assets
 import com.nishimura.cholessthanthree.MyGdxGame
+import com.nishimura.cholessthanthree.PlayerState
 import com.nishimura.cholessthanthree.PlayerState.handSize
 import com.nishimura.cholessthanthree.Targetable
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.properties.Delegates
 
 
 data class Card(private var cost: Int,
@@ -17,10 +20,35 @@ data class Card(private var cost: Int,
                 private var onDiscard: Effect? = null,
                 private var targets: List<Class<Targetable>> = emptyList()
 ): Targetable, Image(Assets.card) {
+    enum class CardDisplayState {
+        DRAWING,RESTING,HOVERING,DISCARDING,CLICKED,RETURN_FROM_CLICKED,PLAYED_TO_DISCARD,GONE
+    }
     companion object {
         val cardWidth = (MyGdxGame.WIDTH * 0.9f / handSize)
         val cardHeight = cardWidth*2
+        val resolutionTime = 0.25f
     }
+//    var displayState: CardDisplayState by Delegates.observable(CardDisplayState.GONE, { property, oldValue, newValue ->
+//        when(newValue) {
+//            CardDisplayState.DRAWING -> {
+//                setSize(0f,0f)
+//                setPosition()
+//                val sizeUpAction = Actions.sizeTo(Card.cardWidth,Card.cardHeight, resolutionTime)
+//                val fadeInAction = Actions.fadeIn(resolutionTime)
+//                val moveAction = Actions.sequence(
+//                        Actions.moveTo(restingX / 2, restingY, resolutionTime / 2),
+//                        Actions.moveTo(restingX, restingY, resolutionTime / 2)
+//                )
+//                val rotationAction = Actions.rotateTo(startingRotation, resolutionTime)
+//                val waitAction = Actions.delay(resolutionTime * index)
+//                val combinedAction = Actions.sequence(waitAction,
+//                        Actions.parallel(moveAction, rotationAction, sizeUpAction, fadeInAction),
+//                        Actions.run{card.isBeingDrawnFromDeck = false}
+//                )
+//            }
+//        }
+//    })
+
     var isDown = false
     var isBeingDrawnFromDeck = true
     init {
