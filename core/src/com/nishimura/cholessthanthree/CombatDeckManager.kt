@@ -14,25 +14,16 @@ import com.nishimura.cholessthanthree.PlayerState.handSize
 import com.nishimura.cholessthanthree.actions.flipIn
 import com.nishimura.cholessthanthree.actions.flipOut
 import com.nishimura.cholessthanthree.actors.Card
+import com.nishimura.cholessthanthree.actors.DeckButton
 import com.nishimura.cholessthanthree.actors.Hand
 
 
 class CombatDeckManager(val stage: Stage) {
-    val drawPileButton = Image(Assets.card).apply {
-        setSize(Card.cardWidth, Card.cardHeight)
-        setPosition(width / 4, width / 4)
-    }
-    val drawPileLabel = Label(drawPile.size.toString(),
-            Label.LabelStyle(Assets.healthFont, Color.RED)).apply {
-        setPosition(drawPileButton.x + drawPileButton.width / 2 - width / 2,
-                drawPileButton.y + drawPileButton.height / 2 - height / 2)
-    }
 
     val hand = Hand()
 
     fun beginTurn() {
-        stage.addActor(drawPileButton)
-        stage.addActor(drawPileLabel)
+        stage.addActor(DeckButton)
         drawPhase@ for (i in 1..getPlayerDraw()) {
             if (drawPile.isEmpty()) {
                 if (discardPile.isNotEmpty()) {
@@ -66,7 +57,7 @@ class CombatDeckManager(val stage: Stage) {
                 break@drawPhase
             }
         }
-        currentHand.forEach { it.setPosition(drawPileButton.x,drawPileButton.y) }
+        currentHand.forEach { it.setPosition(DeckButton.x,DeckButton.y) }
         hand.setCards(currentHand, stage)
     }
 
