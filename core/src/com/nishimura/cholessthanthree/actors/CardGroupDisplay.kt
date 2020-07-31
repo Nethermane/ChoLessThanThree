@@ -3,17 +3,44 @@ package com.nishimura.cholessthanthree.actors
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Group
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.scenes.scene2d.ui.Container
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
+import com.badlogic.gdx.utils.Align
+import com.nishimura.cholessthanthree.Assets
 import com.nishimura.cholessthanthree.MyGdxGame
 
 
 object CardGroupDisplay : Group() {
-    private val tableOfCards = Table().apply {
+
+    private val backButton = Label("Back", Label.LabelStyle(Assets.healthFont, Color.BLACK).apply{
+        val bgTexture = TextureRegionDrawable(Assets.backLeftLabel)
+        background = bgTexture
+    }).apply {
+        addListener(  object: ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                super.clicked(event, x, y)
+                this@CardGroupDisplay.addAction(Actions.removeActor())
+            }
+        })
+        setAlignment(Align.center)
+        setFillParent(true)
     }
+    private val backButtonTable = Table().apply {
+        width = Card.cardGroupDisplayWidth/2 *1.5f
+        height = backButton.prefHeight
+        add(backButton).width(Card.cardGroupDisplayWidth/2*1.5f).fill().expand().left()
+        y = MyGdxGame.HEIGHT/3
+    }
+
+
+    private val tableOfCards = Table()
     val cardDisplay = ScrollPane(tableOfCards).apply {
         setFillParent(true)
         val pixmap = Pixmap(1, 1, Pixmap.Format.RGBA8888)
@@ -22,21 +49,18 @@ object CardGroupDisplay : Group() {
         style = ScrollPane.ScrollPaneStyle(TextureRegionDrawable(Texture(pixmap)), null, null, null,
                 null)
         pixmap.dispose()
+        setScrollingDisabled(true,false)
     }
 
     init {
         setSize(MyGdxGame.WIDTH, MyGdxGame.HEIGHT)
         addActor(cardDisplay)
+        addActor(backButtonTable)
 
-    }
 
-    override fun draw(batch: Batch?, parentAlpha: Float) {
-        super.draw(batch, parentAlpha)
     }
 
     fun setCards(cards: List<Card>) {
-        tableOfCards.reset()
-        tableOfCards.debugAll()
         val cardsInARow = 5
         for ((index, card) in cards.withIndex()) {
             val clonedNewCard = card.toDisplayCard()

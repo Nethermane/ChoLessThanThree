@@ -27,6 +27,7 @@ object Assets {
     const val cursorString = "color_cursor"
     const val cardFrontString = "cardTemp"
     const val drawPileBackground = "drawPileLabelBackground"
+    const val backleftLabelString = "back_label_left"
 
     val assetManager: AssetManager = AssetManager().also { it.registerFreeTypeFontLoaders() }
     val atlas: TextureAtlas by assetManager.load(imagesPack)
@@ -45,6 +46,10 @@ object Assets {
     val cardLabelBackground by lazy {
         assetManager.finishLoadingAsset<TextureAtlas>(imagesPack)
         atlas.findRegion(drawPileBackground)
+    }
+    val backLeftLabel by lazy {
+        assetManager.finishLoadingAsset<TextureAtlas>(imagesPack)
+        atlas.findRegion(backleftLabelString)
     }
     val targetCircle by lazy {
         assetManager.finishLoadingAsset<TextureAtlas>(imagesPack)

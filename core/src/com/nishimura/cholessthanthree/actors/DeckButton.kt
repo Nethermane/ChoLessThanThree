@@ -35,7 +35,7 @@ object DeckButton: Group() {
         addListener( object: ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 super.clicked(event, x, y)
-                CardGroupDisplay.setCards(deck)
+                CardGroupDisplay.setCards(drawPile)
                 stage.addActor(CardGroupDisplay)
 
             }
