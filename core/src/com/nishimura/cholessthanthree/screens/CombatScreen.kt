@@ -7,18 +7,15 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.nishimura.cholessthanthree.Assets
 import com.nishimura.cholessthanthree.MyGdxGame
 import com.nishimura.cholessthanthree.PlayerState
-import com.nishimura.cholessthanthree.actors.Card
-import com.nishimura.cholessthanthree.actors.CombatDeckManager
+import com.nishimura.cholessthanthree.CombatDeckManager
 import com.nishimura.cholessthanthree.actors.HealthBar
 import ktx.app.KtxScreen
 
@@ -36,19 +33,17 @@ class CombatScreen(val game: Game) : KtxScreen {
         it.setPosition(deckTextButton.x + deckTextButton.width, MyGdxGame.HEIGHT - it.height)
 
     }
-    val combatDeckManager = CombatDeckManager()
+    val combatDeckManager = CombatDeckManager(stage)
     init {
         deckTextButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 PlayerState.health--
             }
         })
-        stage.isDebugAll = true
         stage.addActor(Image(Assets.background).also { it.setSize(MyGdxGame.WIDTH, MyGdxGame.HEIGHT) })
         stage.addActor(deckTextButton)
         stage.addActor(health)
         combatDeckManager.beginTurn()
-        combatDeckManager.hand.cards.forEach { stage.addActor(it) }
         Gdx.input.inputProcessor = stage
     }
 

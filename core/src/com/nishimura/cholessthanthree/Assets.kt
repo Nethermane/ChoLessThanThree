@@ -23,8 +23,12 @@ object Assets {
     private const val smallFont = "stickman_small.ttf"
     private const val bigFont = "stickman_big.ttf"
     const val backgroundString = "paper"
-    const val cardString = "cardTemp"
+    const val cardString = "cardBack"
     const val cursorString = "color_cursor"
+    const val cardFrontString = "cardTemp"
+    const val drawPileBackground = "drawPileLabelBackground"
+    const val backleftLabelString = "back_label_left"
+
     val assetManager: AssetManager = AssetManager().also { it.registerFreeTypeFontLoaders() }
     val atlas: TextureAtlas by assetManager.load(imagesPack)
     val background by lazy {
@@ -34,6 +38,18 @@ object Assets {
     val card by lazy {
         assetManager.finishLoadingAsset<TextureAtlas>(imagesPack)
         atlas.findRegion(cardString)
+    }
+    val cardFront by lazy {
+        assetManager.finishLoadingAsset<TextureAtlas>(imagesPack)
+        atlas.findRegion(cardFrontString)
+    }
+    val cardLabelBackground by lazy {
+        assetManager.finishLoadingAsset<TextureAtlas>(imagesPack)
+        atlas.findRegion(drawPileBackground)
+    }
+    val backLeftLabel by lazy {
+        assetManager.finishLoadingAsset<TextureAtlas>(imagesPack)
+        atlas.findRegion(backleftLabelString)
     }
     val targetCircle by lazy {
         assetManager.finishLoadingAsset<TextureAtlas>(imagesPack)
