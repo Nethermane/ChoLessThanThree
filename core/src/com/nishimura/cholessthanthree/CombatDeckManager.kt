@@ -15,6 +15,7 @@ import com.nishimura.cholessthanthree.actions.flipIn
 import com.nishimura.cholessthanthree.actions.flipOut
 import com.nishimura.cholessthanthree.actors.Card
 import com.nishimura.cholessthanthree.actors.DeckButton
+import com.nishimura.cholessthanthree.actors.DiscardButton
 import com.nishimura.cholessthanthree.actors.Hand
 
 
@@ -24,6 +25,7 @@ class CombatDeckManager(val stage: Stage) {
 
     fun beginTurn() {
         stage.addActor(DeckButton)
+        stage.addActor(DiscardButton)
         drawPhase@ for (i in 1..getPlayerDraw()) {
             if (drawPile.isEmpty()) {
                 if (discardPile.isNotEmpty()) {

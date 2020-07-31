@@ -1,14 +1,9 @@
 package com.nishimura.cholessthanthree.actors
 
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
@@ -16,14 +11,16 @@ import com.badlogic.gdx.utils.Align
 import com.nishimura.cholessthanthree.Assets
 import com.nishimura.cholessthanthree.MyGdxGame
 import com.nishimura.cholessthanthree.PlayerState
-import com.nishimura.cholessthanthree.PlayerState.deck
-import com.nishimura.cholessthanthree.PlayerState.drawPile
+
 
 //TODO: Make the asset a cool S
-object DeckButton: Group() {
+object DiscardButton: Group() {
     val background = Image(Assets.card)
-    val label = Label(drawPile.size.toString(), Label.LabelStyle(Assets.healthFont, Color.RED).also{it.background = TextureRegionDrawable(Assets.cardLabelBackground)})
-    val drawPileListener =  {old:List<Card>, new:List<Card> -> label.setText(new.size.toString())}
+    val label = Label(
+            PlayerState.discardPile.size.toString(), Label.LabelStyle(Assets.healthFont, Color.RED).also{it.background = TextureRegionDrawable(
+            Assets.cardLabelBackground)
+    })
+    val discardPileListener =  {old:List<Card>, new:List<Card> -> label.setText(new.size.toString())}
     init {
         setSize(Card.cardWidth/2,Card.cardHeight/2)
         background.setSize(width,height)
@@ -32,16 +29,16 @@ object DeckButton: Group() {
         label.setAlignment(Align.center)
         addActor(background)
         addActor(label)
-        PlayerState.drawPileListeners.add(drawPileListener)
+        PlayerState.discardPileListeners.add(discardPileListener)
         addListener( object: ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 super.clicked(event, x, y)
-                CardGroupDisplay.setCards(drawPile)
+                CardGroupDisplay.setCards(PlayerState.discardPile)
                 stage.addActor(CardGroupDisplay)
 
             }
         })
-        setPosition(MyGdxGame.WIDTH*0.1f,height/2)
+        setPosition(MyGdxGame.WIDTH*0.9f-width, height/2)
     }
 
 }
