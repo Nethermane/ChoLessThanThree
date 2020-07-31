@@ -35,6 +35,7 @@ data class Card(private var cost: Int,
 
     var restingX = 0f
     var restingY = 0f
+    var restingRotation = 0f
 
     /**
      * Creates a new card with the same values as this card
@@ -89,6 +90,7 @@ data class Card(private var cost: Int,
 
     var isDown = false
     var isBeingDrawnFromDeck = true
+    var isBeingDiscarded = false
 
     init {
         setSize(cardWidth, cardHeight)

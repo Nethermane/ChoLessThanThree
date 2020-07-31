@@ -33,7 +33,7 @@ class CombatScreen(val game: Game) : KtxScreen {
         it.setPosition(deckTextButton.x + deckTextButton.width, MyGdxGame.HEIGHT - it.height)
 
     }
-    val combatDeckManager = CombatDeckManager(stage)
+    val combatDeckManager = CombatDeckManager
     init {
         deckTextButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
@@ -43,6 +43,7 @@ class CombatScreen(val game: Game) : KtxScreen {
         stage.addActor(Image(Assets.background).also { it.setSize(MyGdxGame.WIDTH, MyGdxGame.HEIGHT) })
         stage.addActor(deckTextButton)
         stage.addActor(health)
+        stage.addActor(combatDeckManager)
         combatDeckManager.beginTurn()
         Gdx.input.inputProcessor = stage
     }
