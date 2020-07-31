@@ -61,6 +61,7 @@ object CardGroupDisplay : Group() {
     }
 
     fun setCards(cards: List<Card>) {
+        tableOfCards.clear()
         val cardsInARow = 5
         for ((index, card) in cards.withIndex()) {
             val clonedNewCard = card.toDisplayCard()
