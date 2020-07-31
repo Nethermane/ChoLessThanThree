@@ -28,6 +28,7 @@ object Assets {
     const val cardFrontString = "cardTemp"
     const val drawPileBackground = "drawPileLabelBackground"
     const val backleftLabelString = "back_label_left"
+    const val blackCircleString = "blackCircle"
 
     val assetManager: AssetManager = AssetManager().also { it.registerFreeTypeFontLoaders() }
     val atlas: TextureAtlas by assetManager.load(imagesPack)
@@ -54,6 +55,10 @@ object Assets {
     val targetCircle by lazy {
         assetManager.finishLoadingAsset<TextureAtlas>(imagesPack)
         extractPixmapFromTextureRegion(atlas.findRegion(cursorString))
+    }
+    val blackCircle by lazy {
+        assetManager.finishLoadingAsset<TextureAtlas>(imagesPack)
+        atlas.findRegion(blackCircleString)
     }
     val font: BitmapFont by lazy {
         val robotoFontBigParam = FreeTypeFontLoaderParameter()
