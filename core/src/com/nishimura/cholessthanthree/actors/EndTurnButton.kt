@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
 import com.nishimura.cholessthanthree.Assets
 import com.nishimura.cholessthanthree.MyGdxGame
+import com.nishimura.cholessthanthree.PlayerState
 
 object EndTurnButton : Label("End\nTurn", Label.LabelStyle(Assets.healthFont, Color.RED).also {
     it.background = TextureRegionDrawable(
@@ -17,13 +18,13 @@ object EndTurnButton : Label("End\nTurn", Label.LabelStyle(Assets.healthFont, Co
     val glyph = GlyphLayout(Assets.healthFont, "End\nTurn")
 
     init {
-        this.debug()
         setSize(glyph.height * 2, glyph.height * 2)
         setAlignment(Align.center)
         addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 super.clicked(event, x, y)
-
+                if(!Hand.isDrawing && !Hand.isDiscarding)
+                    PlayerState.turnNumber++
             }
         })
         setPosition(MyGdxGame.WIDTH-width*1.5f, height * 2)

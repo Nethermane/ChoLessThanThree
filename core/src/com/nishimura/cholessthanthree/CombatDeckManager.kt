@@ -1,36 +1,51 @@
 package com.nishimura.cholessthanthree
 
-import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
-import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
+import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction
 import com.nishimura.cholessthanthree.PlayerState.currentHand
 import com.nishimura.cholessthanthree.PlayerState.discardPile
 import com.nishimura.cholessthanthree.PlayerState.drawPile
 import com.nishimura.cholessthanthree.PlayerState.getPlayerDraw
 import com.nishimura.cholessthanthree.PlayerState.handSize
-import com.nishimura.cholessthanthree.actions.flipIn
-import com.nishimura.cholessthanthree.actions.flipOut
 import com.nishimura.cholessthanthree.actors.*
 
 
-class CombatDeckManager(val stage: Stage) {
+object CombatDeckManager : Group() {
+    val turnEndListener = { oldTurn: Int, newTurn: Int ->
+        val repeat = Actions.sequence(
+                Actions.run{Hand.isDiscarding = true},
+                Actions.repeat(currentHand.size, Actions.sequence(Actions.run {
+                    PlayerState.discardLastCardInHand()
+                }, Actions.delay(Card.resolutionTime))),
+                Actions.run {
+                    Hand.isDiscarding = false
+                    beginTurn()
+                }
+        )
+        addAction(repeat)
+    }
 
-    val hand = Hand()
+    init {
+        addActor(DeckButton)
+        addActor(DiscardButton)
+        addActor(EndTurnButton)
+        addActor(Hand)
+        PlayerState.turnListeners.add(turnEndListener)
+    }
 
     fun beginTurn() {
-        stage.addActor(DeckButton)
-        stage.addActor(DiscardButton)
-        stage.addActor(EndTurnButton)
-        drawPhase@ for (i in 1..getPlayerDraw()) {
+        var repeat: RepeatAction? = null
+        var repeated = 0
+        repeat = Actions.repeat(getPlayerDraw(), Actions.sequence(Actions.run {
+            repeated++
             if (drawPile.isEmpty()) {
                 if (discardPile.isNotEmpty()) {
                     PlayerState.shuffleDiscardIntoDraw()
                 } else {
                     //There is nothing left to draw
-                    break@drawPhase
+                    repeat!!.finish()
+                    return@run
                 }
             }
             //Draw to hand if there is room
@@ -43,7 +58,8 @@ class CombatDeckManager(val stage: Stage) {
             }
             //Otherwise draw rest of cards expected to discard and end turn
             else {
-                for (j in i..getPlayerDraw()) {
+                repeat?.count
+                for (j in repeated..repeat!!.count) {
                     if (drawPile.isNotEmpty()) {
                         PlayerState.drawToDiscard()
                         discardPile.last().onDiscard(requestTarget(discardPile.last()))
@@ -54,11 +70,47 @@ class CombatDeckManager(val stage: Stage) {
 //                        }
                     }
                 }
-                break@drawPhase
+                repeat?.finish()
             }
-        }
-        currentHand.forEach { it.setPosition(DeckButton.x,DeckButton.y) }
-        hand.setCards(currentHand, stage)
+        }, Actions.delay(Card.resolutionTime * 2)))
+        val seq = Actions.sequence(Actions.run{Hand.isDrawing = true},
+            repeat, Actions.run{Hand.isDrawing = false})
+        addAction(seq)
+//
+//        drawPhase@ for (i in 1..getPlayerDraw()) {
+//            if (drawPile.isEmpty()) {
+//                if (discardPile.isNotEmpty()) {
+//                    PlayerState.shuffleDiscardIntoDraw()
+//                } else {
+//                    //There is nothing left to draw
+//                    break@drawPhase
+//                }
+//            }
+//            //Draw to hand if there is room
+//            if (currentHand.size < handSize) {
+////                val cardToDraw = drawPile.removeAt(0)
+////                currentHand.add(cardToDraw)
+//                PlayerState.addTopDrawCardToHand()
+//                //Apply any on draw effects the card may have
+//                currentHand.last().onDraw(requestTarget(currentHand.last()))
+//            }
+//            //Otherwise draw rest of cards expected to discard and end turn
+//            else {
+//                for (j in i..getPlayerDraw()) {
+//                    if (drawPile.isNotEmpty()) {
+//                        PlayerState.drawToDiscard()
+//                        discardPile.last().onDiscard(requestTarget(discardPile.last()))
+////                        with(drawPile.removeAt(0)) {
+////                            discardPile.add(this)
+////                            //May remove this later depending on if overdraw is considered discarding
+////                            onDiscard(requestTarget(this))
+////                        }
+//                    }
+//                }
+//                break@drawPhase
+//            }
+//        }
+
     }
 
     private fun requestTarget(cardToDraw: Card): Targetable? {
