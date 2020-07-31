@@ -2,6 +2,8 @@ package com.nishimura.cholessthanthree
 
 import com.nishimura.cholessthanthree.actors.Card
 import com.nishimura.cholessthanthree.effects.Status
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
 
 
@@ -18,8 +20,8 @@ object PlayerState {
     val turnListeners = ArrayList<(oldTurnNum: Int, newTurnNum: Int) -> Unit>()
 
 
-    private val _currentHand: ArrayList<Card> = ArrayList()
-    private val _discardPile: ArrayList<Card> = ArrayList()
+    private val _currentHand: Stack<Card> = Stack()
+    private val _discardPile: Stack<Card> = Stack()
     private val _drawPile: ArrayList<Card> = DeckManager.getCardsForPlayDeckManager()
 
     var deck: List<Card> by Delegates.observable(DeckManager.cards.toList()) { property, oldValue, newValue ->
@@ -63,6 +65,16 @@ object PlayerState {
         _drawPile.shuffle()
         drawPile = _drawPile.toList()
         _discardPile.clear()
+        discardPile = _discardPile.toList()
+    }
+    fun shuffleDiscard() {
+        _discardPile.shuffle()
+        discardPile = _discardPile.toList()
+    }
+    fun moveTopDiscardToDraw() {
+        println(discardPile)
+        _drawPile.add(_discardPile.pop())
+        drawPile = _drawPile.toList()
         discardPile = _discardPile.toList()
     }
 
