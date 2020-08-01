@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import ktx.assets.getValue
 import ktx.assets.load
 import ktx.freetype.registerFreeTypeFontLoaders
@@ -30,35 +31,14 @@ object Assets {
     const val backleftLabelString = "back_label_left"
     const val blackCircleString = "blackCircle"
 
-    val assetManager: AssetManager = AssetManager().also { it.registerFreeTypeFontLoaders() }
-    val atlas: TextureAtlas by assetManager.load(imagesPack)
-    val background by lazy {
-        assetManager.finishLoadingAsset<TextureAtlas>(imagesPack)
-        atlas.findRegion(backgroundString)
+    val assetManager: AssetManager = AssetManager().also { it.registerFreeTypeFontLoaders() }.also {
+        it.load<TextureAtlas>(imagesPack)
     }
-    val card by lazy {
-        assetManager.finishLoadingAsset<TextureAtlas>(imagesPack)
-        atlas.findRegion(cardString)
-    }
-    val cardFront by lazy {
-        assetManager.finishLoadingAsset<TextureAtlas>(imagesPack)
-        atlas.findRegion(cardFrontString)
-    }
-    val cardLabelBackground by lazy {
-        assetManager.finishLoadingAsset<TextureAtlas>(imagesPack)
-        atlas.findRegion(drawPileBackground)
-    }
-    val backLeftLabel by lazy {
-        assetManager.finishLoadingAsset<TextureAtlas>(imagesPack)
-        atlas.findRegion(backleftLabelString)
-    }
+    val atlas: TextureAtlas = assetManager.finishLoadingAsset(imagesPack)
+    val atlasSkin = Skin(atlas)
     val targetCircle by lazy {
         assetManager.finishLoadingAsset<TextureAtlas>(imagesPack)
         extractPixmapFromTextureRegion(atlas.findRegion(cursorString))
-    }
-    val blackCircle by lazy {
-        assetManager.finishLoadingAsset<TextureAtlas>(imagesPack)
-        atlas.findRegion(blackCircleString)
     }
     val font: BitmapFont by lazy {
         val robotoFontBigParam = FreeTypeFontLoaderParameter()

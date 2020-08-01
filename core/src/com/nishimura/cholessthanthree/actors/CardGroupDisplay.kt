@@ -20,8 +20,7 @@ import com.nishimura.cholessthanthree.MyGdxGame
 object CardGroupDisplay : Group() {
 
     private val backButton = Label("Back", Label.LabelStyle(Assets.healthFont, Color.BLACK).apply{
-        val bgTexture = TextureRegionDrawable(Assets.backLeftLabel)
-        background = bgTexture
+        background = Assets.atlasSkin.getDrawable(Assets.backleftLabelString)
     }).apply {
         addListener(  object: ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {

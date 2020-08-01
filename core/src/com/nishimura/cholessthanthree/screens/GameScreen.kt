@@ -32,7 +32,7 @@ class GameScreen(val game: Game) : KtxScreen {
 //                game.screen = GameScreen()
             }
         })
-        stage.addActor(Image(Assets.background).also{it.setSize(MyGdxGame.WIDTH, MyGdxGame.HEIGHT)})
+        stage.addActor(Image(Assets.atlasSkin.getDrawable("paper")).also{it.setSize(MyGdxGame.WIDTH, MyGdxGame.HEIGHT)})
         stage.addActor(deckTextButton)
         Gdx.input.inputProcessor = stage
     }

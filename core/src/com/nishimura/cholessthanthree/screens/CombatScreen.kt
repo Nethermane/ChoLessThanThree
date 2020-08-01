@@ -40,7 +40,7 @@ class CombatScreen(val game: Game) : KtxScreen {
                 PlayerState.health--
             }
         })
-        stage.addActor(Image(Assets.background).also { it.setSize(MyGdxGame.WIDTH, MyGdxGame.HEIGHT) })
+        stage.addActor(Image(Assets.atlasSkin.getDrawable("paper")).also { it.setSize(MyGdxGame.WIDTH, MyGdxGame.HEIGHT) })
         stage.addActor(deckTextButton)
         stage.addActor(health)
         stage.addActor(combatDeckManager)

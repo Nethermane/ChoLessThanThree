@@ -20,7 +20,7 @@ data class Card(private var cost: Int,
                 private var onDraw: Effect? = null,
                 private var onDiscard: Effect? = null,
                 private var targets: List<Class<Targetable>> = emptyList()
-) : Targetable, Image(Assets.card) {
+) : Targetable, Image(Assets.atlasSkin.getDrawable("cardBack")) {
     enum class CardDisplayState {
         DRAWING, RESTING, HOVERING, DISCARDING, CLICKED, RETURN_FROM_CLICKED, PLAYED_TO_DISCARD, GONE
     }
