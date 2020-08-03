@@ -1,10 +1,12 @@
 package com.nishimura.cholessthanthree
 
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.FileHandleResolver
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.graphics.Pixmap
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -36,7 +38,7 @@ object Assets {
         it.load<TextureAtlas>(imagesPack)
     }
     val atlas: TextureAtlas = assetManager.finishLoadingAsset(imagesPack)
-    val atlasSkin = Skin(atlas)
+    val atlasSkin = Skin(Gdx.files.internal("raw/skin.json"),atlas)
     val targetCircle by lazy {
         assetManager.finishLoadingAsset<TextureAtlas>(imagesPack)
         extractPixmapFromTextureRegion(atlas.findRegion(cursorString))
@@ -44,16 +46,19 @@ object Assets {
     val font: BitmapFont by lazy {
         val robotoFontBigParam = FreeTypeFontLoaderParameter()
         robotoFontBigParam.fontFileName = mainFontString
-        robotoFontBigParam.fontParameters.size = 100
+        robotoFontBigParam.fontParameters.size = 128
+        robotoFontBigParam.fontParameters.magFilter = Texture.TextureFilter.Linear
+        robotoFontBigParam.fontParameters.minFilter = Texture.TextureFilter.Linear
         assetManager.load<BitmapFont>(bigFont, robotoFontBigParam)
         assetManager.finishLoadingAsset<BitmapFont>(bigFont)
         assetManager.get<BitmapFont>(bigFont)
     }
     val healthFont: BitmapFont by lazy {
         val robotoFontBigParam = FreeTypeFontLoaderParameter()
-
         robotoFontBigParam.fontFileName = mainFontString
         robotoFontBigParam.fontParameters.size = 40
+        robotoFontBigParam.fontParameters.magFilter = Texture.TextureFilter.Linear
+        robotoFontBigParam.fontParameters.minFilter = Texture.TextureFilter.Linear
         assetManager.load<BitmapFont>(smallFont, robotoFontBigParam)
         assetManager.finishLoadingAsset<BitmapFont>(smallFont)
         assetManager.get<BitmapFont>(smallFont)
