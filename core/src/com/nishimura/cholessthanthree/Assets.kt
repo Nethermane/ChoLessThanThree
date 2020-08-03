@@ -30,7 +30,8 @@ object Assets {
     const val drawPileBackground = "drawPileLabelBackground"
     const val backleftLabelString = "back_label_left"
     const val blackCircleString = "blackCircle"
-
+    const val character = "character"
+    const val bird = "bird"
     val assetManager: AssetManager = AssetManager().also { it.registerFreeTypeFontLoaders() }.also {
         it.load<TextureAtlas>(imagesPack)
     }

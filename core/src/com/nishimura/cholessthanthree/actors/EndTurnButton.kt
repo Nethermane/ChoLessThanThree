@@ -26,7 +26,7 @@ object EndTurnButton : Label("End\nTurn", Label.LabelStyle(Assets.healthFont, Co
                     PlayerState.turnNumber++
             }
         })
-        setPosition(MyGdxGame.WIDTH-width*1.5f, height * 2)
+        setPosition(MyGdxGame.WIDTH-width*1.5f, DiscardButton.y + DiscardButton.height)
     }
 
 }
