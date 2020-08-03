@@ -12,8 +12,10 @@ import com.nishimura.cholessthanthree.MyGdxGame
 object Player: Actor() {
     val idleAnim = Animation<TextureRegion>(0.033f, Assets.atlas.findRegions("idle/idle"), PlayMode.LOOP)
     var idleAnimTime = 0f
+    val runAnim = Animation<TextureRegion>(0.033f, Assets.atlas.findRegions("run/run"), PlayMode.LOOP)
+    var runAnimTime = 0f
     init {
-        val width = MyGdxGame.WIDTH*0.2f
+        val width = MyGdxGame.WIDTH*0.4f
         setSize(width, width*1.06640625f)
         setPosition(MyGdxGame.WIDTH*0.2f,MyGdxGame.HEIGHT*0.4f)
     }
@@ -21,9 +23,10 @@ object Player: Actor() {
     override fun act(delta: Float) {
         super.act(delta)
         idleAnimTime+=delta
+        runAnimTime+=delta
     }
     override fun draw(batch: Batch?, parentAlpha: Float) {
         super.draw(batch, parentAlpha)
-        batch?.draw(idleAnim.getKeyFrame(idleAnimTime,true),x,y,width,height)
+        batch?.draw(runAnim.getKeyFrame(runAnimTime,true),x,y,width,height)
     }
 }

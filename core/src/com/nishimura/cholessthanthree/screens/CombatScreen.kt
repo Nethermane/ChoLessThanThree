@@ -13,9 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.nishimura.cholessthanthree.Assets
+import com.nishimura.cholessthanthree.CombatDeckManager
 import com.nishimura.cholessthanthree.MyGdxGame
 import com.nishimura.cholessthanthree.PlayerState
-import com.nishimura.cholessthanthree.CombatDeckManager
 import com.nishimura.cholessthanthree.actors.HealthBar
 import ktx.app.KtxScreen
 
@@ -51,9 +51,8 @@ class CombatScreen(val game: Game) : KtxScreen {
 
     override fun render(delta: Float) {
 
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-
+        //Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT or if (Gdx.graphics.bufferFormat.coverageSampling) GL20.GL_COVERAGE_BUFFER_BIT_NV else 0)
         stage.act()
         stage.draw()
     }
