@@ -23,8 +23,12 @@ import ktx.freetype.registerFreeTypeFontLoaders
 object Assets {
     const val imagesPack = "output/atlas_name.atlas"
     private const val mainFontString = "fonts/stickman.ttf"
+    private const val timesFontString = "fonts/times_400.ttf"
+
     private const val smallFont = "stickman_small.ttf"
     private const val bigFont = "stickman_big.ttf"
+    private const val defaultFontInternalName = "times_400.ttf"
+
     const val backgroundString = "paper"
     const val cardString = "cardBack"
     const val cursorString = "color_cursor"
@@ -63,7 +67,16 @@ object Assets {
         assetManager.finishLoadingAsset<BitmapFont>(smallFont)
         assetManager.get<BitmapFont>(smallFont)
     }
-
+    val defaultFont: BitmapFont by lazy {
+        val robotoFontBigParam = FreeTypeFontLoaderParameter()
+        robotoFontBigParam.fontFileName = timesFontString
+        robotoFontBigParam.fontParameters.size = 12
+        robotoFontBigParam.fontParameters.magFilter = Texture.TextureFilter.Linear
+        robotoFontBigParam.fontParameters.minFilter = Texture.TextureFilter.Linear
+        assetManager.load<BitmapFont>(defaultFontInternalName, robotoFontBigParam)
+        assetManager.finishLoadingAsset<BitmapFont>(defaultFontInternalName)
+        assetManager.get<BitmapFont>(defaultFontInternalName)
+    }
 
     init {
         val resolver: FileHandleResolver = InternalFileHandleResolver()
