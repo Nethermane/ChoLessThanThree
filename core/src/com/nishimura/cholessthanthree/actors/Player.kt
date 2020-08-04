@@ -1,8 +1,10 @@
 package com.nishimura.cholessthanthree.actors
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -18,16 +20,14 @@ object Player : Image(Assets.atlasSkin.getDrawable(Assets.character)) {
     var animTime = 0f
     var state: State = State.Still
     var entered = false
-
+    val mySprite = Assets.atlas.findRegion(Assets.character)
     enum class State(val animation: Animation<TextureRegion>?) {
         Still(null),
-        Running(Animation<TextureRegion>(0.02f, Assets.atlas.findRegions("run/run"),
+        Running(Animation<TextureRegion>((1f/24f), Assets.atlas.findRegions("run/run"),
                 PlayMode.LOOP)),
-        Dancing(Animation<TextureRegion>(0.053f, Assets.atlas.findRegions("idle/idle"),
+        Dancing(Animation<TextureRegion>((1f/24f), Assets.atlas.findRegions("dance/dance"),
                 PlayMode.LOOP)),
-        Punching(Animation<TextureRegion>(0.033f, Assets.atlas.findRegions("punch/punch"),
-                PlayMode.LOOP)),
-        LeftPunching(Animation<TextureRegion>(0.033f, Assets.atlas.findRegions("leftPunch/leftPunch"),
+        Punching(Animation<TextureRegion>((1f/24f), Assets.atlas.findRegions("rightPunch/rightPunch"),
                 PlayMode.LOOP));
 
         open operator fun next(): State {
@@ -70,10 +70,11 @@ object Player : Image(Assets.atlasSkin.getDrawable(Assets.character)) {
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
+        batch?.color = Color.BLACK
         state.animation?.let {
             batch?.draw(it.getKeyFrame(animTime, true), x, y, width, height)
         } ?: run {
-            super.draw(batch, parentAlpha)
+            batch?.draw(mySprite,x,y,width,height)
         }
     }
 }
