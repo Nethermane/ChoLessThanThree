@@ -14,13 +14,13 @@ import com.nishimura.cholessthanthree.Assets
 import com.nishimura.cholessthanthree.MyGdxGame
 
 
-object Player : Image(Assets.atlasSkin.getDrawable(Assets.character)) {
+object Player : Actor() {
     val runFastAnim = Animation<TextureRegion>(0.02f, Assets.atlas.findRegions("runFast/runFast"),
             PlayMode.LOOP)
     var animTime = 0f
     var state: State = State.Still
     var entered = false
-    val mySprite = Assets.atlas.findRegion(Assets.character)
+    val idleTexture = Assets.atlas.findRegion(Assets.character)
     enum class State(val animation: Animation<TextureRegion>?) {
         Still(null),
         Running(Animation<TextureRegion>((1f/24f), Assets.atlas.findRegions("run/run"),
@@ -40,6 +40,7 @@ object Player : Image(Assets.atlasSkin.getDrawable(Assets.character)) {
         val width = MyGdxGame.WIDTH * 0.3f
         setSize(width, width * 1.06640625f)
         setPosition(0f, MyGdxGame.HEIGHT * 0.4f)
+        color = Color.BLACK
         addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 super.clicked(event, x, y)
@@ -70,11 +71,11 @@ object Player : Image(Assets.atlasSkin.getDrawable(Assets.character)) {
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        batch?.color = Color.BLACK
+        batch?.color = color
         state.animation?.let {
             batch?.draw(it.getKeyFrame(animTime, true), x, y, width, height)
         } ?: run {
-            batch?.draw(mySprite,x,y,width,height)
+            batch?.draw(idleTexture,x,y,width,height)
         }
     }
 }

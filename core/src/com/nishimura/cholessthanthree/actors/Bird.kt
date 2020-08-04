@@ -1,5 +1,6 @@
 package com.nishimura.cholessthanthree.actors
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
@@ -10,6 +11,7 @@ import com.nishimura.cholessthanthree.MyGdxGame
 class Bird : Enemy() {
 
     init {
+        color = Color.BLACK
         val flap = Actions.forever(
                 Actions.sequence(Actions.moveBy(0f, -50f, 1.5f, Interpolation.exp5),
                         Actions.moveBy(0f, 50f, 1.5f)))
