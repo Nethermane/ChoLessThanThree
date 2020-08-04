@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
@@ -16,6 +17,7 @@ object Player : Image(Assets.atlasSkin.getDrawable(Assets.character)) {
             PlayMode.LOOP)
     var animTime = 0f
     var state: State = State.Still
+    var entered = false
 
     enum class State(val animation: Animation<TextureRegion>?) {
         Still(null),
@@ -43,6 +45,21 @@ object Player : Image(Assets.atlasSkin.getDrawable(Assets.character)) {
                 super.clicked(event, x, y)
                 state = state.next()
                 animTime = 0f
+            }
+
+            override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int,
+                               fromActor: Actor?) {
+                super.enter(event, x, y, pointer, fromActor)
+                entered = true
+                println("enter")
+            }
+
+            override fun exit(event: InputEvent?, x: Float, y: Float, pointer: Int,
+                              toActor: Actor?) {
+                super.exit(event, x, y, pointer, toActor)
+                entered = false
+                println("exit")
+
             }
         })
     }

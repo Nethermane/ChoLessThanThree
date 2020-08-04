@@ -1,6 +1,7 @@
 package com.nishimura.cholessthanthree.actors
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Cursor
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -49,7 +50,7 @@ object Hand : Group() {
 
 
     fun reorganizeHand() {
-        for ((index, card) in currentHand.withIndex()) {
+        LoopCards@ for ((index, card) in currentHand.withIndex()) {
             if (card.isBeingDrawnFromDeck || card.isBeingDiscarded)
                 continue
             val absIndexFromMiddle = abs(currentHand.size / 2 - index)
@@ -57,6 +58,11 @@ object Hand : Group() {
                 restingRotation = -((180f / 16f * (-(index - currentHand.size / 2))))
                 restingX = MyGdxGame.WIDTH * 0.5f + (currentHand.size / 2 - index) * cardWidth
                 restingY = -(Card.cardHeight / 3f + absIndexFromMiddle * Card.cardHeight / currentHand.size / 2f)
+                //Set it's position to return to but don't add action to card being held
+            }
+            if (card.isDown)
+                continue@LoopCards
+            with(card) {
                 val moveAction = Actions.moveTo(restingX, restingY, resolutionTime)
                 val rotationAction = Actions.rotateTo(restingRotation, resolutionTime)
                 addAction(Actions.parallel(moveAction, rotationAction))
@@ -71,6 +77,23 @@ object Hand : Group() {
             restingY = -(Card.cardHeight / 3f + absIndexFromMiddle * Card.cardHeight / currentHand.size / 2f)
             restingRotation = -((180f / 16f * (-currentHand.size / 2)))
             addListener(object : DragListener() {
+                override fun drag(event: InputEvent?, x: Float, y: Float, pointer: Int) {
+                    if (anyDown && !isTargetting && Player.entered) {
+                        card.moveTo(event!!.stageX, event.stageY)
+                        isTargetting = true
+                        Gdx.graphics.setCursor(targettingCursor)
+                    } else if (anyDown && isTargetting && !Player.entered) {
+                        isTargetting = false
+                        Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow)
+                    } else if (isTargetting && !anyDown) {
+                        isTargetting = false
+                        Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow)
+                    }
+                    if (!isTargetting)
+                        moveTo(event!!.stageX, event.stageY)
+                    return super.drag(event, x, y, pointer)
+                }
+
                 override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int,
                                    fromActor: Actor?) {
                     if (!anyDown && !isBeingDrawnFromDeck) {
@@ -82,7 +105,6 @@ object Hand : Group() {
                                                 Card.cardHeight * 1.5f,
                                                 cardSelectAnimationDuration),
                                         Actions.rotateTo(0f, cardSelectAnimationDuration)))
-                        zIndex += 1
                     }
                 }
 
@@ -97,7 +119,6 @@ object Hand : Group() {
                                                 cardSelectAnimationDuration),
                                         Actions.rotateTo(restingRotation,
                                                 cardSelectAnimationDuration)))
-                        zIndex -= 1
                     }
                 }
 
@@ -109,7 +130,6 @@ object Hand : Group() {
 
                 override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int,
                                        button: Int): Boolean {
-//                    Gdx.input.isCursorCatched = true
                     anyDown = true
                     isBeingDrawnFromDeck = false
                     isDown = true
@@ -121,22 +141,6 @@ object Hand : Group() {
                     return super.touchDown(event, x, y, pointer, button)
                 }
 
-                override fun touchDragged(event: InputEvent?, x: Float, y: Float,
-                                          pointer: Int) {
-//                    if (anyDown && event!!.stageY > MyGdxGame.HEIGHT * 0.3f && !isTargetting) {
-//                        card.moveTo(event.stageX, event.stageY)
-//                        isTargetting = true
-////                        Gdx.input.isCursorCatched = false
-//                        Gdx.graphics.setCursor(targettingCursor)
-////                        Gdx.input.setCursorPosition(event.stageX.toInt(), event.stageY.toInt())
-//                    } else if (anyDown && event!!.stageY <= MyGdxGame.HEIGHT * 0.3f && isTargetting) {
-//                        isTargetting = false
-//                        Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow)
-//                    }
-                    if (!isTargetting)
-                        moveTo(event!!.stageX, event.stageY)
-                    super.touchDragged(event, x, y, pointer)
-                }
             })
             setPosition(DeckButton.x, DeckButton.y)
             setSize(0f, 0f)
