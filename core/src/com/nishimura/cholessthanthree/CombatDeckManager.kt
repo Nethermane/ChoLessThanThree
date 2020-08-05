@@ -9,6 +9,7 @@ import com.nishimura.cholessthanthree.PlayerState.discardPile
 import com.nishimura.cholessthanthree.PlayerState.drawPile
 import com.nishimura.cholessthanthree.PlayerState.getPlayerDraw
 import com.nishimura.cholessthanthree.PlayerState.handSize
+import com.nishimura.cholessthanthree.PlayerState.targetableEntities
 import com.nishimura.cholessthanthree.actors.*
 
 
@@ -38,7 +39,9 @@ object CombatDeckManager : Group() {
         addActor(EndTurnButton)
         addActor(Hand)
         addActor(Player)
-        addActor(Bird())
+        val aBird = Bird()
+        addActor(aBird)
+        targetableEntities.add(aBird)
         PlayerState.turnListeners.add(turnEndListener)
     }
 

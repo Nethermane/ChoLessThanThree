@@ -78,4 +78,8 @@ object Player : Actor(), Targetable {
             batch?.draw(idleTexture,x,y,width,height)
         }
     }
+
+    override fun hit(x: Float, y: Float): Boolean {
+        return  (x >= this.x && x < width+this.x && y >= this.y && y < height+this.y)
+    }
 }

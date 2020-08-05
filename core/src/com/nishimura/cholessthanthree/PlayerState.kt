@@ -1,6 +1,7 @@
 package com.nishimura.cholessthanthree
 
 import com.nishimura.cholessthanthree.actors.Card
+import com.nishimura.cholessthanthree.actors.Player
 import com.nishimura.cholessthanthree.effects.Status
 import java.util.*
 import kotlin.collections.ArrayList
@@ -23,6 +24,8 @@ object PlayerState {
     private val _currentHand: Stack<Card> = Stack()
     private val _discardPile: Stack<Card> = Stack()
     private val _drawPile: ArrayList<Card> = DeckManager.getCardsForPlayDeckManager()
+
+    val targetableEntities: ArrayList<Targetable> = arrayListOf(Player)
 
     var deck: List<Card> by Delegates.observable(DeckManager.cards.toList()) { property, oldValue, newValue ->
         // do your stuff here
