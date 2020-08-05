@@ -15,10 +15,9 @@ import com.nishimura.cholessthanthree.PlayerState
 
 //TODO: Make the asset a cool S
 object DiscardButton: Group() {
-    val background = Image(Assets.card)
+    val background = Image(Assets.atlasSkin.getDrawable("cardBack"))
     val label = Label(
-            PlayerState.discardPile.size.toString(), Label.LabelStyle(Assets.healthFont, Color.RED).also{it.background = TextureRegionDrawable(
-            Assets.cardLabelBackground)
+            PlayerState.discardPile.size.toString(), Label.LabelStyle(Assets.healthFont, Color.RED).also{it.background = Assets.atlasSkin.getDrawable(Assets.drawPileBackground)
     })
     val discardPileListener =  {old:List<Card>, new:List<Card> -> label.setText(new.size.toString())}
     init {

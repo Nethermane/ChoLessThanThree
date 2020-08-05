@@ -21,8 +21,8 @@ import com.nishimura.cholessthanthree.PlayerState.drawPile
 
 //TODO: Make the asset a cool S
 object DeckButton: Group() {
-    val background = Image(Assets.card)
-    val label = Label(drawPile.size.toString(), Label.LabelStyle(Assets.healthFont, Color.RED).also{it.background = TextureRegionDrawable(Assets.cardLabelBackground)})
+    val background = Image(Assets.atlasSkin.getDrawable("cardBack"))
+    val label = Label(drawPile.size.toString(), Label.LabelStyle(Assets.healthFont, Color.RED).also{it.background = Assets.atlasSkin.getDrawable(Assets.drawPileBackground)})
     val drawPileListener =  {old:List<Card>, new:List<Card> -> label.setText(new.size.toString())}
     init {
         setSize(Card.cardWidth/2,Card.cardHeight/2)

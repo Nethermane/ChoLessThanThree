@@ -12,8 +12,7 @@ import com.nishimura.cholessthanthree.MyGdxGame
 import com.nishimura.cholessthanthree.PlayerState
 
 object EndTurnButton : Label("End\nTurn", Label.LabelStyle(Assets.healthFont, Color.RED).also {
-    it.background = TextureRegionDrawable(
-            Assets.blackCircle)
+    it.background = Assets.atlasSkin.getDrawable(Assets.blackCircleString)
 }) {
     val glyph = GlyphLayout(Assets.healthFont, "End\nTurn")
 
@@ -27,7 +26,7 @@ object EndTurnButton : Label("End\nTurn", Label.LabelStyle(Assets.healthFont, Co
                     PlayerState.turnNumber++
             }
         })
-        setPosition(MyGdxGame.WIDTH-width*1.5f, height * 2)
+        setPosition(MyGdxGame.WIDTH-width*1.5f, DiscardButton.y + DiscardButton.height)
     }
 
 }

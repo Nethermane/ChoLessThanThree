@@ -36,7 +36,7 @@ class MenuScreen(val game: Game) : KtxScreen {
                 game.screen = CombatScreen(game)
             }
         })
-        stage.addActor(Image(Assets.background).also{it.setSize(MyGdxGame.WIDTH,MyGdxGame.HEIGHT)})
+        stage.addActor(Image(Assets.atlasSkin.getDrawable("paper")).also{it.setSize(MyGdxGame.WIDTH,MyGdxGame.HEIGHT)})
         stage.addActor(playButton)
         Gdx.input.inputProcessor = stage
     }

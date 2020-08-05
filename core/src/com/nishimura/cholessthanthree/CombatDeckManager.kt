@@ -9,11 +9,12 @@ import com.nishimura.cholessthanthree.PlayerState.discardPile
 import com.nishimura.cholessthanthree.PlayerState.drawPile
 import com.nishimura.cholessthanthree.PlayerState.getPlayerDraw
 import com.nishimura.cholessthanthree.PlayerState.handSize
+import com.nishimura.cholessthanthree.PlayerState.targetableEntities
 import com.nishimura.cholessthanthree.actors.*
 
 
 object CombatDeckManager : Group() {
-    const val shuffleTime = 1f
+    const val shuffleTime = 0.25f
     val turnEndListener = { oldTurn: Int, newTurn: Int ->
         val repeat = Actions.sequence(
                 Actions.run { Hand.isDiscarding = true },
@@ -37,6 +38,10 @@ object CombatDeckManager : Group() {
         addActor(DiscardButton)
         addActor(EndTurnButton)
         addActor(Hand)
+        addActor(Player)
+        val aBird = Bird()
+        addActor(aBird)
+        targetableEntities.add(aBird)
         PlayerState.turnListeners.add(turnEndListener)
     }
 
