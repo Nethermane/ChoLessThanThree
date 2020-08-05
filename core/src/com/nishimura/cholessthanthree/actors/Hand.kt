@@ -117,6 +117,7 @@ object Hand : Group() {
                                                 Card.cardHeight * 1.5f,
                                                 cardSelectAnimationDuration),
                                         Actions.rotateTo(0f, cardSelectAnimationDuration)))
+                        card.toFront()
                     }
                 }
 
@@ -131,6 +132,7 @@ object Hand : Group() {
                                                 cardSelectAnimationDuration),
                                         Actions.rotateTo(restingRotation,
                                                 cardSelectAnimationDuration)))
+                        currentHand.forEach { it.toFront() }
                     }
                 }
 

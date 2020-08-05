@@ -1,6 +1,9 @@
 package com.nishimura.cholessthanthree.actors
 
+import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.scenes.scene2d.Action
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Image
@@ -21,7 +24,7 @@ data class Card(private var cost: Int,
                 private var onDraw: Effect? = null,
                 private var onDiscard: Effect? = null,
                 val targets: List<KClass<out Targetable>> = emptyList()
-) : Targetable, Image(Assets.atlasSkin.getDrawable("cardBack")) {
+) : Targetable, Group() {
     override fun hit(x: Float, y: Float): Boolean {
         return  (x >= this.x && x < width+this.x && y >= this.y && y < height+this.y)
     }
@@ -49,7 +52,6 @@ data class Card(private var cost: Int,
             with(Card(this)) {
                 setSize(cardGroupDisplayWidth, cardGroupDisplayHeight)
                 setOrigin(width / 2f, height / 2f)
-                align = Align.center
                 addListener(object : ClickListener() {
                     override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int,
                                        fromActor: Actor?) {
@@ -96,11 +98,25 @@ data class Card(private var cost: Int,
     var isDown = false
     var isBeingDrawnFromDeck = true
     var isBeingDiscarded = false
+    val cardBackground = Image(Assets.atlasSkin.getDrawable("cardBack")).also{it.setFillParent(true)}
+    val manaGem = Image(Assets.atlasSkin.getDrawable("mana_icon")).also{
+        it.setSize(cardWidth/3, cardWidth/3)
+        it.setPosition(0f,cardHeight- cardWidth/3)
+    }
 
     init {
         setSize(cardWidth, cardHeight)
         setOrigin(width / 2f, height / 2f)
+        addActor(cardBackground)
+        addActor(manaGem)
+    }
 
+    override fun setSize(width: Float, height: Float) {
+        super.setSize(width, height)
+        with(manaGem) {
+            setSize(width/3, width/3)
+            setPosition(0f,height- width/3)
+        }
     }
 
     //When this card is brought to the hand
@@ -137,4 +153,5 @@ data class Card(private var cost: Int,
         val newY = min(maxY, max(y, minY))
         setPosition(newX, newY, Align.center)
     }
+
 }
