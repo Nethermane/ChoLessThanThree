@@ -13,13 +13,14 @@ import com.nishimura.cholessthanthree.PlayerState.handSize
 import com.nishimura.cholessthanthree.Targetable
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.reflect.KClass
 
 
 data class Card(private var cost: Int,
                 private var onPlay: Effect? = null,
                 private var onDraw: Effect? = null,
                 private var onDiscard: Effect? = null,
-                private var targets: List<Class<Targetable>> = emptyList()
+                val targets: List<KClass<out Targetable>> = emptyList()
 ) : Targetable, Image(Assets.atlasSkin.getDrawable("cardBack")) {
     enum class CardDisplayState {
         DRAWING, RESTING, HOVERING, DISCARDING, CLICKED, RETURN_FROM_CLICKED, PLAYED_TO_DISCARD, GONE

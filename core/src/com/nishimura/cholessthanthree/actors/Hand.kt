@@ -1,7 +1,13 @@
 package com.nishimura.cholessthanthree.actors
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Cursor
+import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.math.Bezier
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -14,9 +20,12 @@ import com.nishimura.cholessthanthree.PlayerState.currentHand
 import com.nishimura.cholessthanthree.PlayerState.handSize
 import com.nishimura.cholessthanthree.actors.Card.Companion.cardWidth
 import com.nishimura.cholessthanthree.actors.Card.Companion.resolutionTime
+import com.nishimura.cholessthanthree.hit
 import kotlin.math.abs
 
+
 object Hand : Group() {
+    private var isOnTarget = false
     var anyDown = false
     var isTargetting = false
     val cardSelectAnimationDuration = 0.1f
@@ -36,6 +45,8 @@ object Hand : Group() {
             reorganizeHand()
         }
     }
+    private val path1: Bezier<Vector2> = Bezier()
+    private val sr: ShapeRenderer = ShapeRenderer()
     private val targettingCursor = Gdx.graphics.newCursor(Assets.targetCircle,
             Assets.targetCircle.width / 2,
             Assets.targetCircle.width / 2)
@@ -78,19 +89,18 @@ object Hand : Group() {
             restingRotation = -((180f / 16f * (-currentHand.size / 2)))
             addListener(object : DragListener() {
                 override fun drag(event: InputEvent?, x: Float, y: Float, pointer: Int) {
-                    if (anyDown && !isTargetting && Player.entered) {
-                        card.moveTo(event!!.stageX, event.stageY)
-                        isTargetting = true
-                        Gdx.graphics.setCursor(targettingCursor)
-                    } else if (anyDown && isTargetting && !Player.entered) {
-                        isTargetting = false
-                        Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow)
-                    } else if (isTargetting && !anyDown) {
-                        isTargetting = false
-                        Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow)
-                    }
-                    if (!isTargetting)
+                    if (targets.isEmpty() && card.isDown) {
                         moveTo(event!!.stageX, event.stageY)
+                    } else if (card.isDown && !isOnTarget) {
+                        isTargetting = true
+                        val controlPoints: Array<Vector2> = arrayOf<Vector2>(
+                                Vector2(MyGdxGame.WIDTH / 2, Card.cardHeight * 1.5f),
+                                Vector2(MyGdxGame.WIDTH / 2, y),
+                                Vector2(x + MyGdxGame.WIDTH / 2 - Card.cardWidth * 1.5f / 2, y)
+                        )
+                        path1.set(*controlPoints)
+
+                    }
                     return super.drag(event, x, y, pointer)
                 }
 
@@ -125,6 +135,17 @@ object Hand : Group() {
                 override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int,
                                      button: Int) {
                     anyDown = false
+                    isTargetting = false
+                    if (!anyDown && !isBeingDrawnFromDeck) {
+                        clearActions()
+                        addAction(
+                                Actions.parallel(Actions.sizeTo(Card.cardWidth, Card.cardHeight,
+                                        cardSelectAnimationDuration),
+                                        Actions.moveTo(restingX, restingY,
+                                                cardSelectAnimationDuration),
+                                        Actions.rotateTo(restingRotation,
+                                                cardSelectAnimationDuration)))
+                    }
                     super.touchUp(event, x, y, pointer, button)
                 }
 
@@ -135,8 +156,11 @@ object Hand : Group() {
                     isDown = true
                     clearActions()
                     toFront()
-                    moveTo(event!!.stageX, event.stageY)
                     addAction(Actions.sizeTo(Card.cardWidth * 1.5f, Card.cardHeight * 1.5f))
+                    if (card.targets.isEmpty())
+                        moveTo(event!!.stageX, event.stageY)
+                    else
+                        moveTo(MyGdxGame.WIDTH / 2, 0f)
                     rotation = 0f
                     return super.touchDown(event, x, y, pointer, button)
                 }
@@ -177,6 +201,63 @@ object Hand : Group() {
                     }
             )
             addAction(combinedAction)
+        }
+    }
+
+    override fun draw(batch: Batch?, parentAlpha: Float) {
+        super.draw(batch, parentAlpha)
+        if (anyDown && isTargetting) {
+            batch?.end()
+            Gdx.gl.glEnable(GL20.GL_BLEND)
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
+            sr.begin(ShapeRenderer.ShapeType.Filled)
+            sr.color = Color.CLEAR
+            sr.projectionMatrix = batch?.projectionMatrix
+            //draw path1
+
+            //draw path1
+            val k = 1000
+            val endOffset = 1f / k
+            val radius = MyGdxGame.WIDTH / 50
+            var finalPointValue = (k - 1f) / k
+            val mousePos = screenToLocalCoordinates(Vector2(Gdx.input.x.toFloat(),
+                    Gdx.input.y.toFloat()))
+            val mousePosInHitBox = Player.hit(mousePos.x, mousePos.y)
+            for (i in 0 until k) {
+                val t = (i.toFloat()) / k
+                sr.color.add(0f, 0f, 0f, 2f / k)
+                // create vectors to store start and end points of this section of the curve
+                val st = Vector2()
+                val end = Vector2()
+                // get the start point of this curve section
+                path1.valueAt(st, t)
+                // get the next start point(this point's end)
+                path1.valueAt(end, t - endOffset)
+                if (mousePosInHitBox && Player.hit(end.x, end.y)) {
+                    finalPointValue = t
+                    if (!isOnTarget) {
+                        isOnTarget = true
+                        Gdx.graphics.setCursor(targettingCursor)
+                    }
+                    break
+                }
+                // draw the curve
+                sr.rectLine(st.x, st.y, end.x, end.y, radius)
+            }
+
+            //Was on target, but is no longer
+            if (isOnTarget && !mousePosInHitBox) {
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow)
+                isOnTarget = false
+                println("No longer on target")
+            }
+            val circlePos = Vector2()
+            // get the start point of this curve section
+            path1.valueAt(circlePos, finalPointValue)
+            sr.circle(circlePos.x, circlePos.y, radius / 2)
+            sr.end()
+            batch?.begin()
+            Gdx.gl.glDisable(GL20.GL_BLEND)
         }
     }
 }

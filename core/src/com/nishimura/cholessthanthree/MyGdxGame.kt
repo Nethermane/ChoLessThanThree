@@ -15,6 +15,8 @@ import kotlin.properties.Delegates
 
 class MyGdxGame : Game() {
     companion object {
+        const val gameName = "CHOLessThanThree"
+        const val grpahicsPreferenceString = gameName +"GraphicsSettings"
         var graphicsPrefs: Preferences by Delegates.notNull()
         private set
         var WIDTH: Float by Delegates.notNull()
@@ -26,6 +28,8 @@ class MyGdxGame : Game() {
 
     override fun create() {
         graphicsPrefs =  Gdx.app.getPreferences("Graphics")
+        graphicsPrefs.put(mapOf("test" to "huh"))
+        graphicsPrefs.flush()
         WIDTH = graphicsPrefs.getFloat("width", 1024f)
         HEIGHT = graphicsPrefs.getFloat("height", 768f)
         Gdx.graphics.setTitle("Stickman Roguelite Deckbuilder")

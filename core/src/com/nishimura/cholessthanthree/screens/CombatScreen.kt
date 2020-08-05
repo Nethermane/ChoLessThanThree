@@ -21,9 +21,6 @@ import ktx.app.KtxScreen
 
 
 class CombatScreen(val game: Game) : KtxScreen {
-    val cam: OrthographicCamera = OrthographicCamera().apply {
-        setToOrtho(false, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
-    }
     val viewport = FitViewport(MyGdxGame.WIDTH, MyGdxGame.HEIGHT)
     val stage = Stage(viewport, PolygonSpriteBatch())
     val deckTextButton: TextButton = TextButton("Deck", TextButton.TextButtonStyle(null, null, null, Assets.font).apply{this.fontColor= Color.BLACK}).also {
@@ -97,7 +94,6 @@ class CombatScreen(val game: Game) : KtxScreen {
     }
 
     override fun resize(width: Int, height: Int) {
-        cam.setToOrtho(false, width.toFloat(), height.toFloat())
         stage.viewport.update(width, height)
     }
 

@@ -12,9 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.nishimura.cholessthanthree.Assets
 import com.nishimura.cholessthanthree.MyGdxGame
+import com.nishimura.cholessthanthree.Targetable
 
 
-object Player : Actor() {
+object Player : Actor(), Targetable {
     val runFastAnim = Animation<TextureRegion>(0.02f, Assets.atlas.findRegions("runFast/runFast"),
             PlayMode.LOOP)
     var animTime = 0f
@@ -37,6 +38,7 @@ object Player : Actor() {
     }
 
     init {
+        debug= true
         val width = MyGdxGame.WIDTH * 0.3f
         setSize(width, width * 1.06640625f)
         setPosition(0f, MyGdxGame.HEIGHT * 0.4f)
@@ -52,14 +54,12 @@ object Player : Actor() {
                                fromActor: Actor?) {
                 super.enter(event, x, y, pointer, fromActor)
                 entered = true
-                println("enter")
             }
 
             override fun exit(event: InputEvent?, x: Float, y: Float, pointer: Int,
                               toActor: Actor?) {
                 super.exit(event, x, y, pointer, toActor)
                 entered = false
-                println("exit")
 
             }
         })
