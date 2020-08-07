@@ -1,7 +1,9 @@
 package com.nishimura.cholessthanthree
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.scenes.scene2d.Group
 
 fun Vector2.toInsideStagePosition(): Vector2 {
     val newVector2 = Vector2(this)

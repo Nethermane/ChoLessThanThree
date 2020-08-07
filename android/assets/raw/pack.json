@@ -2,5 +2,7 @@
   maxWidth: 4096,
   maxHeight: 4096,
   filterMin: "MipMapLinearLinear",
-  "filterMag": "MipMapLinearLinear"
+  filterMag: "MipMapLinearLinear",
+  paddingX: 128,
+  paddingY: 128
 }

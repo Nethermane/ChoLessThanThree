@@ -19,6 +19,7 @@ import com.nishimura.cholessthanthree.PlayerState
 import com.nishimura.cholessthanthree.PlayerState.currentHand
 import com.nishimura.cholessthanthree.PlayerState.handSize
 import com.nishimura.cholessthanthree.PlayerState.targetableEntities
+import com.nishimura.cholessthanthree.actors.Card.Companion.cardHeight
 import com.nishimura.cholessthanthree.actors.Card.Companion.cardWidth
 import com.nishimura.cholessthanthree.actors.Card.Companion.resolutionTime
 import com.nishimura.cholessthanthree.toInsideStagePosition
@@ -53,9 +54,6 @@ object Hand : Group() {
             Assets.targetCircle.width / 2)
 
     init {
-        width = MyGdxGame.WIDTH * 0.9f
-        height = (MyGdxGame.WIDTH * 0.9f / handSize)
-        this.debugAll()
         PlayerState.currentHandListeners.add(cardDrawnListener)
         PlayerState.discardPileListeners.add(cardDiscardListener)
     }
@@ -88,6 +86,9 @@ object Hand : Group() {
             restingX = MyGdxGame.WIDTH * 0.5f + (currentHand.size / 2 - (currentHand.size - 1)) * Card.cardWidth
             restingY = -(Card.cardHeight / 3f + absIndexFromMiddle * Card.cardHeight / currentHand.size / 2f)
             restingRotation = -((180f / 16f * (-currentHand.size / 2)))
+            this.isBeingDrawnFromDeck = true
+            this.isDown = false
+            this.isBeingDiscarded = false
             addListener(object : DragListener() {
                 override fun drag(event: InputEvent?, x: Float, y: Float, pointer: Int) {
                     val clampedPositon = Vector2(event!!.stageX,event.stageY).toInsideStagePosition()
@@ -111,10 +112,9 @@ object Hand : Group() {
                     if (!anyDown && !isBeingDrawnFromDeck) {
                         addAction(
                                 Actions.parallel(
-                                        Actions.moveTo(restingX - Card.cardWidth / 1.5f / 2, 0f,
+                                        Actions.moveTo(restingX, (cardHeight*1.5f - cardHeight)/2,
                                                 cardSelectAnimationDuration),
-                                        Actions.sizeTo(Card.cardWidth * 1.5f,
-                                                Card.cardHeight * 1.5f,
+                                        Actions.scaleTo( 1.5f,1.5f,
                                                 cardSelectAnimationDuration),
                                         Actions.rotateTo(0f, cardSelectAnimationDuration)))
                         card.toFront()
@@ -126,7 +126,7 @@ object Hand : Group() {
                     if (!anyDown && !isBeingDrawnFromDeck) {
                         clearActions()
                         addAction(
-                                Actions.parallel(Actions.sizeTo(Card.cardWidth, Card.cardHeight,
+                                Actions.parallel(Actions.scaleTo(1f, 1f,
                                         cardSelectAnimationDuration),
                                         Actions.moveTo(restingX, restingY,
                                                 cardSelectAnimationDuration),
@@ -147,7 +147,7 @@ object Hand : Group() {
                     if (!anyDown && !isBeingDrawnFromDeck) {
                         clearActions()
                         addAction(
-                                Actions.parallel(Actions.sizeTo(Card.cardWidth, Card.cardHeight,
+                                Actions.parallel(Actions.scaleTo(1f, 1f,
                                         cardSelectAnimationDuration),
                                         Actions.moveTo(restingX, restingY,
                                                 cardSelectAnimationDuration),
@@ -159,26 +159,28 @@ object Hand : Group() {
 
                 override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int,
                                        button: Int): Boolean {
-                    anyDown = true
-                    isBeingDrawnFromDeck = false
-                    isDown = true
-                    clearActions()
-                    toFront()
-                    addAction(Actions.sizeTo(Card.cardWidth * 1.5f, Card.cardHeight * 1.5f))
-                    if (card.targets.isEmpty())
-                        moveTo(event!!.stageX, event.stageY)
-                    else
-                        moveTo(MyGdxGame.WIDTH / 2, 0f)
-                    rotation = 0f
+                    if(!anyDown) {
+                        anyDown = true
+                        isBeingDrawnFromDeck = false
+                        isDown = true
+                        clearActions()
+                        toFront()
+                        addAction(Actions.scaleTo(1.5f, 1.5f))
+                        if (card.targets.isEmpty())
+                            moveTo(event!!.stageX, event.stageY)
+                        else
+                            moveTo(MyGdxGame.WIDTH / 2, 0f)
+                        rotation = 0f
+                    }
                     return super.touchDown(event, x, y, pointer, button)
                 }
 
             })
             setPosition(DeckButton.x, DeckButton.y)
-            setSize(0f, 0f)
+            setScale(0f, 0f)
             rotation = 0f
             this@Hand.addActor(this)
-            val sizeUpAction = Actions.sizeTo(Card.cardWidth, Card.cardHeight, resolutionTime)
+            val sizeUpAction = Actions.scaleTo(1f, 1f, resolutionTime)
             val fadeInAction = Actions.fadeIn(resolutionTime)
             val moveAction = Actions.sequence(
                     Actions.moveTo(restingX / 2, restingY, resolutionTime / 2),
@@ -197,7 +199,8 @@ object Hand : Group() {
         with(card) {
             isBeingDiscarded = true
             clearListeners()
-            val sizeDownAction = Actions.sizeTo(0f, 0f, resolutionTime)
+            clearActions()
+            val sizeDownAction = Actions.scaleTo(0f, 0f, resolutionTime)
             val fadeOutAction = Actions.fadeOut(resolutionTime)
             val moveAction = Actions.moveTo(DiscardButton.x, DiscardButton.y, resolutionTime)
             val rotationAction = Actions.rotateTo(0f, resolutionTime)
@@ -224,8 +227,8 @@ object Hand : Group() {
             //draw path1
 
             //draw path1
-            val k = 1000
-            val endOffset = 1f / k
+            val k = 200
+            val endOffset = 2f / k
             val radius = MyGdxGame.WIDTH / 50
             var finalPointValue = (k - 1f) / k
             val mousePos = screenToLocalCoordinates(Vector2(Gdx.input.x.toFloat(),
