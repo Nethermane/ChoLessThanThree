@@ -1,6 +1,6 @@
 package com.nishimura.cholessthanthree
 
-import com.nishimura.cholessthanthree.actors.Card
+import com.nishimura.cholessthanthree.data.Card
 import com.nishimura.cholessthanthree.actors.Player
 
 /**

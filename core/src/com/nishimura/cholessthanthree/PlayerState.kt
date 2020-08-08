@@ -1,11 +1,11 @@
 package com.nishimura.cholessthanthree
 
-import com.nishimura.cholessthanthree.actors.Card
 import com.nishimura.cholessthanthree.actors.Player
 import com.nishimura.cholessthanthree.effects.Status
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
+import com.nishimura.cholessthanthree.data.Card
 
 
 object PlayerState {

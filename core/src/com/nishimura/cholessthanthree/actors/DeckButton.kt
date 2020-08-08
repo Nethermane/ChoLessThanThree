@@ -18,6 +18,8 @@ import com.nishimura.cholessthanthree.MyGdxGame
 import com.nishimura.cholessthanthree.PlayerState
 import com.nishimura.cholessthanthree.PlayerState.deck
 import com.nishimura.cholessthanthree.PlayerState.drawPile
+import com.nishimura.cholessthanthree.data.Card
+
 
 //TODO: Make the asset a cool S
 object DeckButton: Group() {
@@ -25,7 +27,7 @@ object DeckButton: Group() {
     val label = Label(drawPile.size.toString(), Label.LabelStyle(Assets.healthFont, Color.RED).also{it.background = Assets.atlasSkin.getDrawable(Assets.drawPileBackground)})
     val drawPileListener =  {old:List<Card>, new:List<Card> -> label.setText(new.size.toString())}
     init {
-        setSize(Card.cardWidth/2,Card.cardHeight/2)
+        setSize(CardView.cardWidth/2,CardView.cardHeight/2)
         background.setSize(width,height)
         label.setSize(width,height/2)
         label.setPosition(width-label.width,0f)

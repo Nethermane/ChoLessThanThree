@@ -14,7 +14,9 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.utils.GdxRuntimeException
 import ktx.assets.load
 import ktx.freetype.registerFreeTypeFontLoaders
 
@@ -154,6 +156,18 @@ object Assets {
         cardbackPixmap.dispose()
         manaPixmap.dispose()
         tex
+    }
+    val outlineShader = let {
+        val vertexShader: String = Gdx.files.internal("shader/df_vertex.glsl").readString()
+        val fragmentShader: String = Gdx.files.internal("shader/outline.glsl").readString()
+        val shaderOutline = ShaderProgram(vertexShader, fragmentShader)
+//        shaderOutline = SpriteBatch.createDefaultShader()
+//        shaderOutline = Gaussian.createBlurShader(MyGdxGame.WIDTH.toInt(), MyGdxGame.HEIGHT.toInt())
+        ShaderProgram.pedantic = false
+        //shaderOutline = ShaderProgram(vertexShader, fragmentShader)
+        if (!shaderOutline.isCompiled) throw GdxRuntimeException(
+                "Couldn't compile shader: " + shaderOutline.log)
+        shaderOutline
     }
 
 }

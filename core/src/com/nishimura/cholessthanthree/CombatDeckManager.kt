@@ -11,6 +11,7 @@ import com.nishimura.cholessthanthree.PlayerState.getPlayerDraw
 import com.nishimura.cholessthanthree.PlayerState.handSize
 import com.nishimura.cholessthanthree.PlayerState.targetableEntities
 import com.nishimura.cholessthanthree.actors.*
+import com.nishimura.cholessthanthree.data.Card
 
 
 object CombatDeckManager : Group() {
@@ -20,7 +21,7 @@ object CombatDeckManager : Group() {
                 Actions.run { Hand.isDiscarding = true },
                 Actions.repeat(currentHand.size, Actions.sequence(Actions.run {
                     PlayerState.discardLastCardInHand()
-                }, Actions.delay(Card.resolutionTime))),
+                }, Actions.delay(CardView.resolutionTime))),
                 Actions.run {
                     Hand.isDiscarding = false
                     beginTurn()
@@ -30,7 +31,6 @@ object CombatDeckManager : Group() {
     }
     private var waitForShuffle = false
     private var repeat: RepeatAction? = null
-    //Variable to indicate the number of times the card draw
     private var repeated = 0
 
     init {
@@ -77,7 +77,6 @@ object CombatDeckManager : Group() {
         }
         //Otherwise draw rest of cards expected to discard and end turn
         else {
-            repeat?.count
             for (j in repeated..repeat!!.count) {
                 if (drawPile.isNotEmpty()) {
                     PlayerState.drawToDiscard()
@@ -86,10 +85,12 @@ object CombatDeckManager : Group() {
             }
             repeat?.finish()
         }
-    }, Actions.delay(Card.resolutionTime * 2)))
+    }, Actions.delay(CardView.resolutionTime * 2)))
 
     fun beginTurn() {
         repeated = 0
+        PlayerState.mana = PlayerState.maxMana
+        Hand.startTurn()
         val myDelayAction = getdDelaySequenceDrawing()
         repeat = Actions.repeat(getPlayerDraw(), Actions.sequence(
                 /**
