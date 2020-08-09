@@ -17,12 +17,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.nishimura.cholessthanthree.*
 import com.nishimura.cholessthanthree.PlayerState.handSize
-import org.omg.PortableInterceptor.DISCARDING
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.properties.Delegates
-import kotlin.reflect.KClass
 import com.nishimura.cholessthanthree.data.Card
 
 
@@ -48,7 +46,7 @@ class CardView(val card: Card) : Targetable, Group() {
         var pathFromCardToMouse: Bezier<Vector2> = Bezier()
     }
 
-    var cost: Int by Delegates.observable(card._cost) { property, oldValue, newValue ->
+    var cost: Int by Delegates.observable(card.cost) { property, oldValue, newValue ->
         manaCostLabel.setText(newValue.toString())
     }
 
@@ -136,10 +134,10 @@ class CardView(val card: Card) : Targetable, Group() {
                 clearActions()
                 toFront()
                 addAction(Actions.scaleTo(1.5f, 1.5f))
-                if (card.targets.isNotEmpty())
+                if (card.onPlay?.first()?.targets != null)
                     moveTo(MyGdxGame.WIDTH / 2, 0f)
-                else
-                    moveTo(0f, 0f)
+//                else
+//                    moveTo(0f, 0f)
                 rotation = 0f
             }
 
@@ -149,10 +147,10 @@ class CardView(val card: Card) : Targetable, Group() {
     override fun act(delta: Float) {
         super.act(delta)
         if (cardDisplayState == CardDisplayState.TARGETTING)
-            if (card.targets.isEmpty())
+            if (card.onPlay?.first()?.targets == null)
                 moveTo(stage.screenToStageCoordinates(Vector2(Gdx.input.x.toFloat(),
                         Gdx.input.y.toFloat())))
-        if (this@CardView == focused && touchDown && this@CardView.card.targets.isNotEmpty()) {
+        if (this@CardView == focused && touchDown && this@CardView.card.onPlay?.first()?.targets != null) {
             //Lock the targetting to inside the screen
             val clampedPositon = stage.screenToStageCoordinates(Vector2(Gdx.input.x.toFloat(),
                     Gdx.input.y.toFloat())).toInsideStagePosition()
@@ -253,7 +251,7 @@ class CardView(val card: Card) : Targetable, Group() {
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        if(card._cost <= PlayerState.mana && cardDisplayState != CardDisplayState.DISCARDING) {
+        if(card.cost <= PlayerState.mana && cardDisplayState != CardDisplayState.DISCARDING) {
             renderWithGreenOutline(batch,parentAlpha)
         } else {
             super.draw(batch, parentAlpha)

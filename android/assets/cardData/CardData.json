@@ -1,0 +1,23 @@
+{
+  class: com.nishimura.cholessthanthree.data.ListOfCards,
+  cards: [
+    {
+      class: com.nishimura.cholessthanthree.data.Card,
+      "id": 0,
+      "title": "Punch",
+      "description": "Deal //0// to target",
+      "onPlay": [
+        {
+          "effectType": DAMAGE,
+          "power": 6,
+          "targets": ENEMY
+        }
+      ],
+      //Neutral color
+      "color": NEUTRAL,
+      //Lowest rarity
+      "rarity": COMMON,
+      "cost": 1
+    }
+  ]
+}

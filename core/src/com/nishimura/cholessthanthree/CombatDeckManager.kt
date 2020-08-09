@@ -18,10 +18,13 @@ object CombatDeckManager : Group() {
     const val shuffleTime = 0.25f
     val turnEndListener = { oldTurn: Int, newTurn: Int ->
         val repeat = Actions.sequence(
-                Actions.run { Hand.isDiscarding = true },
-                Actions.repeat(currentHand.size, Actions.sequence(Actions.run {
-                    PlayerState.discardLastCardInHand()
-                }, Actions.delay(CardView.resolutionTime))),
+                Actions.run {
+                    Hand.isDiscarding = true
+                },
+                Actions.repeat(currentHand.size,
+                        Actions.sequence(Actions.run {
+                            PlayerState.discardLastCardInHand()
+                        }, Actions.delay(CardView.resolutionTime))),
                 Actions.run {
                     Hand.isDiscarding = false
                     beginTurn()
@@ -85,7 +88,7 @@ object CombatDeckManager : Group() {
             }
             repeat?.finish()
         }
-    }, Actions.delay(CardView.resolutionTime * 2)))
+    }, Actions.delay(CardView.resolutionTime)))
 
     fun beginTurn() {
         repeated = 0

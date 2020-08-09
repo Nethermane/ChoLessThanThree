@@ -33,14 +33,18 @@ object Hand : Group() {
     var isDiscarding = false
     val cardsInHand = ArrayList<CardView>()
     val cardDrawnListener: (List<Card>, List<Card>) -> Unit = { oldHand: List<Card>, newHand: List<Card> ->
-        val newCards = newHand.minus(oldHand)
+        val newCards = newHand.filterNot {newCard ->
+            oldHand.any{oldCard -> oldCard === newCard}
+        }
         newCards.takeIf { it.size == 1 }?.first()?.run {
             drawNewCard(this)
             reorganizeHand()
         }
     }
     val cardDiscardListener: (List<Card>, List<Card>) -> Unit = { oldDiscard: List<Card>, newDiscard: List<Card> ->
-        val cardsToDiscard = newDiscard.minus(oldDiscard)
+        val cardsToDiscard = newDiscard.filterNot {newCard ->
+            oldDiscard.any{oldCard -> oldCard === newCard}
+        }
         cardsToDiscard.takeIf { it.size == 1 }?.first()?.run {
             discardCard(this)
             reorganizeHand()
@@ -90,14 +94,14 @@ object Hand : Group() {
     }
 
     fun discardCard(card: Card) {
-        cardsInHand.filter { it.card == card }.forEach {
+        cardsInHand.filter { it.card === card }.forEach {
             it.cardDisplayState = CardView.CardDisplayState.DISCARDING
         }
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         super.draw(batch, parentAlpha)
-        if (CardView.focused != null && CardView.touchDown && !CardView.focused?.card?.targets.isNullOrEmpty()) {
+        if (CardView.focused != null && CardView.touchDown && CardView.focused?.card?.onPlay?.firstOrNull()?.targets != null) {
             batch?.end()
             Gdx.gl.glEnable(GL20.GL_BLEND)
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
