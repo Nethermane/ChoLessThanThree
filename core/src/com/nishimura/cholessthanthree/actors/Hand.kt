@@ -2,28 +2,21 @@ package com.nishimura.cholessthanthree.actors
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.Cursor
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-import com.badlogic.gdx.math.Bezier
 import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
-import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
-import com.badlogic.gdx.scenes.scene2d.utils.DragListener
 import com.nishimura.cholessthanthree.Assets
 import com.nishimura.cholessthanthree.MyGdxGame
 import com.nishimura.cholessthanthree.PlayerState
 import com.nishimura.cholessthanthree.PlayerState.currentHand
 import com.nishimura.cholessthanthree.PlayerState.targetableEntities
-import com.nishimura.cholessthanthree.actors.CardView.Companion.cardHeight
 import com.nishimura.cholessthanthree.actors.CardView.Companion.cardWidth
 import com.nishimura.cholessthanthree.actors.CardView.Companion.resolutionTime
-import com.nishimura.cholessthanthree.toInsideStagePosition
-import kotlin.math.abs
 import com.nishimura.cholessthanthree.data.Card
+import kotlin.math.abs
 
 
 object Hand : Group() {
@@ -33,8 +26,8 @@ object Hand : Group() {
     var isDiscarding = false
     val cardsInHand = ArrayList<CardView>()
     val cardDrawnListener: (List<Card>, List<Card>) -> Unit = { oldHand: List<Card>, newHand: List<Card> ->
-        val newCards = newHand.filterNot {newCard ->
-            oldHand.any{oldCard -> oldCard === newCard}
+        val newCards = newHand.filterNot { newCard ->
+            oldHand.any { oldCard -> oldCard === newCard }
         }
         newCards.takeIf { it.size == 1 }?.first()?.run {
             drawNewCard(this)
@@ -42,8 +35,8 @@ object Hand : Group() {
         }
     }
     val cardDiscardListener: (List<Card>, List<Card>) -> Unit = { oldDiscard: List<Card>, newDiscard: List<Card> ->
-        val cardsToDiscard = newDiscard.filterNot {newCard ->
-            oldDiscard.any{oldCard -> oldCard === newCard}
+        val cardsToDiscard = newDiscard.filterNot { newCard ->
+            oldDiscard.any { oldCard -> oldCard === newCard }
         }
         cardsToDiscard.takeIf { it.size == 1 }?.first()?.run {
             discardCard(this)
@@ -115,10 +108,16 @@ object Hand : Group() {
             val radius = MyGdxGame.WIDTH / 50
             val mousePos = screenToLocalCoordinates(Vector2(Gdx.input.x.toFloat(),
                     Gdx.input.y.toFloat()))
-            val mousePosInHitBox = targetableEntities.any { it.hit(mousePos.x, mousePos.y) }
-            if(!isOnTarget)
-                sr.color.sub(0f,0f,0f,0.5f)
-            for (i in 1 .. k) {
+            val targetableClasses = CardView.focused?.card?.onPlay?.firstOrNull()?.targets?.getClassesForTarget()
+            val mousePosInHitBox = targetableEntities.any { entity ->
+                targetableClasses?.let { clzs ->
+                    clzs.any { clz -> clz.isInstance(entity) }
+                            && entity.hit(mousePos.x, mousePos.y)
+                } ?: false
+            }
+            if (!isOnTarget)
+                sr.color.sub(0f, 0f, 0f, 0.5f)
+            for (i in 1..k) {
                 val t = (i.toFloat()) / k
                 // create vectors to store start and end points of this section of the curve
                 val st = Vector2()

@@ -5,9 +5,9 @@
       class: com.nishimura.cholessthanthree.data.Card,
       "id": 0,
       "title": "Punch",
-      "description": "Deal //0// to target",
-      "onPlay": [
+      "_onPlay": [
         {
+          "description": "Deal {{{0}}} to target",
           "effectType": DAMAGE,
           "power": 6,
           "targets": ENEMY

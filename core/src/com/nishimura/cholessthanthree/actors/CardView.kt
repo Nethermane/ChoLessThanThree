@@ -161,6 +161,9 @@ class CardView(val card: Card) : Targetable, Group() {
             )
             pathFromCardToMouse.set(*controlPoints)
         }
+        if(card.internalDesccription != descText.text.toString()) {
+            descText.setText(card.internalDesccription)
+        }
     }
 
     /**
@@ -201,12 +204,24 @@ class CardView(val card: Card) : Targetable, Group() {
         it.setSize(size, size)
         it.setPosition(cardWidth / 2 - size / 2, cardHeight - size)
     }
+    val descText = Label(card.internalDesccription,
+            Label.LabelStyle(Assets.defaultFont, Color.BLACK)).also {
+        it.setAlignment(Align.center)
+        val width = cardWidth*0.8f
+        val height = cardHeight*0.4f
+        it.setSize(width, height)
+        it.setPosition(cardWidth / 2 - width / 2, 0f)
+        it.wrap = true
+        it.debug()
+    }
+
 
     init {
         setSize(cardWidth, cardHeight)
         setOrigin(width / 2f, height / 2f)
         addActor(cardBackground)
         addActor(manaCostLabel)
+        addActor(descText)
         //The general case listener for cards being in the hand
         addListener(object : ClickListener() {
             override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int,
@@ -262,7 +277,6 @@ class CardView(val card: Card) : Targetable, Group() {
         Assets.outlineShader.let {
             batch!!.end()
             it.bind()
-            manaCostLabel.isVisible = false
             it.setUniformf("u_viewportInverse",
                     Vector2(1f / stage!!.viewport.worldWidth, 1f / stage!!.viewport.worldHeight))
             it.setUniformf("u_offset", 24f)
@@ -270,16 +284,17 @@ class CardView(val card: Card) : Targetable, Group() {
             it.setUniformf("u_color", Vector3(0f, 1f, 0f))
             batch.shader = it
             batch.begin()
-            super.draw(batch, parentAlpha)
+            super.applyTransform(batch, super.computeTransform())
+            cardBackground.draw(batch, parentAlpha)
+            super.resetTransform(batch)
             batch.end()
             batch.shader = null
             batch.begin()
         }
         //Draw the text for the mana cost
-        manaCostLabel.isVisible = true
-        super.applyTransform(batch, super.computeTransform())
-        manaCostLabel.draw(batch, parentAlpha)
-        super.resetTransform(batch)
+        cardBackground.isVisible = false
+        super.draw(batch,parentAlpha)
+        cardBackground.isVisible = true
     }
 
     //Helper function that moves the center of a card to a point
