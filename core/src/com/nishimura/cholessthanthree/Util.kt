@@ -19,3 +19,11 @@ fun Vector2.toInsideStagePosition(): Vector2 {
     }
     return newVector2
 }
+
+inline fun <T> Iterable<T>.sumByFloat(selector: (T) -> Float): Float {
+    var sum = 0f
+    for (element in this) {
+        sum += selector(element)
+    }
+    return sum
+}

@@ -7,10 +7,52 @@
       "title": "Punch",
       "_onPlay": [
         {
-          "description": "Deal {{{0}}} to target",
+          "description": "Deal {{{power}}} to target",
           "effectType": DAMAGE,
           "power": 6,
-          "targets": ENEMY
+          "targets": ENEMY,
+          "anim": [
+            {
+              class: com.nishimura.cholessthanthree.player.AnimState,
+              "state": Punching,
+              "repetitions": 1
+            }
+          ]
+        }
+      ],
+      //Neutral color
+      "color": NEUTRAL,
+      //Lowest rarity
+      "rarity": COMMON,
+      "cost": 1
+    },
+    {
+      class: com.nishimura.cholessthanthree.data.Card,
+      "id": 1,
+      "title": "Fireball",
+      "_onPlay": [
+        {
+          "description": "Deal {{{power}}} to front enemy {{{repeat}}} times",
+          "effectType": DAMAGE,
+          "power": 2,
+          "repeat": 3
+        }
+      ],
+      //Neutral color
+      "color": NEUTRAL,
+      //Lowest rarity
+      "rarity": COMMON,
+      "cost": 2
+    },
+    {
+      class: com.nishimura.cholessthanthree.data.Card,
+      "id": 2,
+      "title": "Block",
+      "_onPlay": [
+        {
+          "description": "Block {{{power}}} damage",
+          "effectType": BLOCK,
+          "power": 4
         }
       ],
       //Neutral color

@@ -15,7 +15,7 @@ object DeckManager {
     private fun makeDefaultDeck() {
         _cards.clear()
         for(i in 0..10)
-            _cards.add(Card.allCards.first().copy())
+            _cards.add(Card.allCards.random().copy())
     }
     fun getCardsForPlayDeckManager(): ArrayList<Card> {
         return ArrayList(_cards.shuffled())

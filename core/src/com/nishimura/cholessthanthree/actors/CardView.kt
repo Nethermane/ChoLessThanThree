@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.nishimura.cholessthanthree.*
 import com.nishimura.cholessthanthree.PlayerState.handSize
+import com.nishimura.cholessthanthree.PlayerState.mana
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -85,6 +86,7 @@ class CardView(val card: Card) : Targetable, Group() {
             }
             CardDisplayState.DISCARDING -> {
                 //Once you start discarding don't let anyone affect this card
+                Hand.cardsInHand.remove(this)
                 clearActions()
                 clearListeners()
                 val sizeDownAction = Actions.scaleTo(0f, 0f, resolutionTime)
@@ -94,12 +96,11 @@ class CardView(val card: Card) : Targetable, Group() {
                 val combinedAction = Actions.sequence(
                         Actions.parallel(moveAction, rotationAction, sizeDownAction, fadeOutAction),
                         Actions.run {
-                            Hand.cardsInHand.remove(this)
                             this.remove()
                             this.clear()
                         }
                 )
-                addAction(combinedAction)
+                this.addAction(combinedAction)
             }
             CardDisplayState.HOVERING -> {
                 addAction(
@@ -248,8 +249,31 @@ class CardView(val card: Card) : Targetable, Group() {
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int,
                                  button: Int) {
+                val targetableClasses = focused?.card?.onPlay?.firstOrNull()?.targets?.getClassesForTarget()
+
+                if (focused != null &&
+                        touchDown &&
+                        focused?.card?.onPlay?.firstOrNull()?.targets == null &&
+                        mana >= cost && event!!.stageY > MyGdxGame.HEIGHT/0.3f) {
+                    mana -= cost
+                    card.onPlay(null)
+                } else if(focused != null &&
+                        touchDown &&
+                        mana >= cost) {
+                    PlayerState.targetableEntities.firstOrNull { entity ->
+                        targetableClasses?.let { clzs ->
+                            clzs.any { clz -> clz.isInstance(entity) }
+                                    && entity.hit(event!!.stageX, event.stageY)
+                        } ?: false
+                    }?.let {
+                        mana -= cost
+                        card.onPlay(it)
+                        PlayerState.cardPlayed(card)
+                    }
+                } else {
+                    focused?.cardDisplayState = CardDisplayState.RESTING
+                }
                 touchDown = false
-                focused?.cardDisplayState = CardDisplayState.RESTING
                 focused = null
                 Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow)
                 super.touchUp(event, x, y, pointer, button)

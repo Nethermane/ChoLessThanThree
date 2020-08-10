@@ -62,11 +62,11 @@ object Hand : Group() {
         LoopCards@ for ((index, card) in cardsInHand.withIndex()) {
             if (card.cardDisplayState == CardView.CardDisplayState.DISCARDING)
                 continue
-            val absIndexFromMiddle = abs(currentHand.size / 2 - index)
+            val absIndexFromMiddle = abs(cardsInHand.size / 2 - index)
             with(card) {
-                restingRotation = -((180f / 16f * (-(index - currentHand.size / 2))))
-                restingX = MyGdxGame.WIDTH * 0.5f + (currentHand.size / 2 - index) * cardWidth
-                restingY = -(CardView.cardHeight / 3f + absIndexFromMiddle * CardView.cardHeight / currentHand.size / 2f)
+                restingRotation = -((180f / 16f * (-(index - cardsInHand.size / 2))))
+                restingX = MyGdxGame.WIDTH * 0.5f + (cardsInHand.size / 2 - index) * cardWidth
+                restingY = -(CardView.cardHeight / 3f + absIndexFromMiddle * CardView.cardHeight / cardsInHand.size / 2f)
                 //Set it's position to return to but don't add action to card being held
             }
             if (CardView.focused == card && CardView.touchDown)

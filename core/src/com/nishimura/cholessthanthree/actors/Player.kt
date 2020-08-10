@@ -4,37 +4,27 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.nishimura.cholessthanthree.Assets
-import com.nishimura.cholessthanthree.MyGdxGame
-import com.nishimura.cholessthanthree.Targetable
+import com.nishimura.cholessthanthree.*
+import com.nishimura.cholessthanthree.player.AnimState
 
 
-object Player : Actor(), Targetable {
+object Player : Actor(), Targetable,Damageable {
+    override var maxHealth = 70
+    override var currentHealth = maxHealth
+    override var isDead = false
     val runFastAnim = Animation<TextureRegion>(0.02f, Assets.atlas.findRegions("runFast/runFast"),
             PlayMode.LOOP)
-    var animTime = 0f
-    var state: State = State.Still
+    private val pendingStates = ArrayList<AnimState>()
     var entered = false
     val idleTexture = Assets.atlas.findRegion(Assets.character)
-    enum class State(val animation: Animation<TextureRegion>?) {
-        Still(null),
-        Running(Animation<TextureRegion>((1f/24f), Assets.atlas.findRegions("run/run"),
-                PlayMode.LOOP)),
-        Dancing(Animation<TextureRegion>((1f/24f), Assets.atlas.findRegions("dance/dance"),
-                PlayMode.LOOP)),
-        Punching(Animation<TextureRegion>((1f/24f), Assets.atlas.findRegions("rightPunch/rightPunch"),
-                PlayMode.LOOP));
-
-        open operator fun next(): State {
-            // No bounds checking required here, because the last instance overrides
-            return values()[(ordinal + 1) % values().size]
-        }
+    fun executeStates(states: List<AnimState>, clear:Boolean = false) {
+        if(clear)
+            pendingStates.clear()
+        pendingStates.addAll(states)
     }
 
     init {
@@ -44,11 +34,6 @@ object Player : Actor(), Targetable {
         setPosition(0f, MyGdxGame.HEIGHT * 0.4f)
         color = Color.BLACK
         addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                super.clicked(event, x, y)
-                state = state.next()
-                animTime = 0f
-            }
 
             override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int,
                                fromActor: Actor?) {
@@ -65,17 +50,23 @@ object Player : Actor(), Targetable {
         })
     }
 
-    override fun act(delta: Float) {
-        super.act(delta)
-        animTime += delta
-    }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         batch?.color = color
-        state.animation?.let {
-            batch?.draw(it.getKeyFrame(animTime, true), x, y, width, height)
-        } ?: run {
-            batch?.draw(idleTexture,x,y,width,height)
+        //Properly jump animations based on time if frames were to drop
+        while (pendingStates.isNotEmpty() && pendingStates.first().isDone()) {
+            val oldState = pendingStates.removeAt(0)
+            if (pendingStates.isNotEmpty()) {
+                pendingStates.first().animTime += oldState.getOverFlowedTime()
+            }
+        }
+        if (pendingStates.isNotEmpty()) {
+            with(pendingStates.first()) {
+                batch?.draw(this.state?.animation?.getKeyFrame(this.animTime, true), x, y, width,
+                        height)
+            }
+        } else {
+            batch?.draw(idleTexture, x, y, width, height)
         }
     }
 

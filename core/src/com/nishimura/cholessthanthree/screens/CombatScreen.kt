@@ -34,7 +34,7 @@ class CombatScreen(val game: Game) : KtxScreen {
     init {
         deckTextButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                PlayerState.health--
+                Player.currentHealth--
             }
         })
         stage.addActor(Image(Assets.atlasSkin.getDrawable("paper")).also { it.setSize(MyGdxGame.WIDTH, MyGdxGame.HEIGHT) })
@@ -114,7 +114,6 @@ class CombatScreen(val game: Game) : KtxScreen {
     }
 
     override fun dispose() {
-        health.dispose()
         stage.dispose()
     }
 
