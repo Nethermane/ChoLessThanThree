@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.nishimura.cholessthanthree.*
+import com.nishimura.cholessthanthree.player.AnimDirection
 import com.nishimura.cholessthanthree.player.AnimState
 
 
@@ -26,6 +27,8 @@ object Player : Actor(), Targetable,Damageable {
             pendingStates.clear()
         pendingStates.addAll(states)
     }
+    var animDirection = AnimDirection.RIGHT
+
 
     init {
         debug= true
@@ -50,16 +53,25 @@ object Player : Actor(), Targetable,Damageable {
         })
     }
 
-
+    override fun act(delta: Float) {
+        super.act(delta)
+        //Increment animation time based on world time
+        pendingStates.firstOrNull()?.let {
+            it.animTime += delta
+        }
+        //Change animation to next
+        while (pendingStates.isNotEmpty() && pendingStates.first().isDone()) {
+            val oldState = pendingStates.removeAt(0)
+            pendingStates.firstOrNull()?.let {
+                it.animTime += oldState.getOverFlowedTime()
+                this.animDirection = it.animDirection ?: AnimDirection.RIGHT
+            }
+        }
+    }
     override fun draw(batch: Batch?, parentAlpha: Float) {
         batch?.color = color
         //Properly jump animations based on time if frames were to drop
-        while (pendingStates.isNotEmpty() && pendingStates.first().isDone()) {
-            val oldState = pendingStates.removeAt(0)
-            if (pendingStates.isNotEmpty()) {
-                pendingStates.first().animTime += oldState.getOverFlowedTime()
-            }
-        }
+
         if (pendingStates.isNotEmpty()) {
             with(pendingStates.first()) {
                 batch?.draw(this.state?.animation?.getKeyFrame(this.animTime, true), x, y, width,
