@@ -6,7 +6,7 @@ import com.nishimura.cholessthanthree.Assets
 
 enum class State(val animation: Animation<TextureRegion>) {
     Running(Animation<TextureRegion>(
-            (1f / 24f),
+            (1f / 48f),
             Assets.atlas.findRegions("run/run"),
             Animation.PlayMode.LOOP)),
     Dancing(Animation<TextureRegion>(

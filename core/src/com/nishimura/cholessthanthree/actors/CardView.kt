@@ -30,6 +30,14 @@ class CardView(val card: Card) : Targetable, Group() {
         return (x >= this.x && x < width + this.x && y >= this.y && y < height + this.y)
     }
 
+    override fun getTargetX(): Float {
+        return x
+    }
+
+    override fun getTargetY(): Float {
+        return y
+    }
+
     enum class CardDisplayState {
         UNKNOWN, DRAWING, RESTING, HOVERING, DISCARDING, TARGETTING, PLAYED_TO_DISCARD, GONE,
         TRANSITIONING

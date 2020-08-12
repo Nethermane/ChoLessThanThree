@@ -114,7 +114,7 @@ data class Card(var id: Int? = null,
 
         fun executeEffect(target: Targetable?) {
             anim?.let {
-                Player.executeStates(it)
+                Player.executeStates(it, target)
             }
             val totalTime: Float = anim?.sumByFloat { it.totalDuration*it.repetitions } ?: 0f
             Player.addAction(Actions.delay(totalTime, Actions.run {

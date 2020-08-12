@@ -16,4 +16,12 @@ abstract class Enemy: Image(), Targetable, Damageable {
         return  (x >= this.x && x < width+this.x && y >= this.y && y < height+this.y)
     }
 
+    override fun getTargetX(): Float {
+        return x
+    }
+
+    override fun getTargetY(): Float {
+        return y
+    }
+
 }

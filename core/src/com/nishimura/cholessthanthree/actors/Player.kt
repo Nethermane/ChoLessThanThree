@@ -7,13 +7,25 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.nishimura.cholessthanthree.*
+import com.nishimura.cholessthanthree.Assets
+import com.nishimura.cholessthanthree.Damageable
+import com.nishimura.cholessthanthree.MyGdxGame
+import com.nishimura.cholessthanthree.Targetable
+import com.nishimura.cholessthanthree.player.AnimActionType
 import com.nishimura.cholessthanthree.player.AnimDirection
 import com.nishimura.cholessthanthree.player.AnimState
 
 
 object Player : Actor(), Targetable,Damageable {
+    override fun getTargetX(): Float {
+        return x
+    }
+
+    override fun getTargetY(): Float {
+        return y
+    }
     override var maxHealth = 70
     override var currentHealth = maxHealth
     override var isDead = false
@@ -22,9 +34,20 @@ object Player : Actor(), Targetable,Damageable {
     private val pendingStates = ArrayList<AnimState>()
     var entered = false
     val idleTexture = Assets.atlas.findRegion(Assets.character)
-    fun executeStates(states: List<AnimState>, clear:Boolean = false) {
+    fun executeStates(states: List<AnimState>, target:Targetable?, clear:Boolean = false) {
         if(clear)
             pendingStates.clear()
+            clearActions()
+            setPosition(0f, MyGdxGame.HEIGHT * 0.4f)
+        if(pendingStates.isEmpty() && states.isNotEmpty()) {
+            this.animDirection = states.first().animDirection ?: AnimDirection.RIGHT
+            states.forEach { it.target = target }
+            when(states.first().animActionType) {
+                AnimActionType.MOVE_TO_ENEMY -> addAction(Actions.moveTo(states.first().target!!.getTargetX()-width,y, states.first().totalDuration))
+                AnimActionType.MOVE_TO_REST -> addAction(Actions.moveTo(0f, MyGdxGame.HEIGHT * 0.4f, states.first().totalDuration))
+                AnimActionType.NONE -> {}
+            }
+        }
         pendingStates.addAll(states)
     }
     var animDirection = AnimDirection.RIGHT
@@ -64,7 +87,15 @@ object Player : Actor(), Targetable,Damageable {
             val oldState = pendingStates.removeAt(0)
             pendingStates.firstOrNull()?.let {
                 it.animTime += oldState.getOverFlowedTime()
+                when(it.animActionType) {
+                    AnimActionType.MOVE_TO_ENEMY -> addAction(Actions.moveTo(it.target!!.getTargetX()-width,y, it.totalDuration))
+                    AnimActionType.MOVE_TO_REST -> addAction(Actions.moveTo(0f, MyGdxGame.HEIGHT * 0.4f, it.totalDuration))
+                    AnimActionType.NONE -> {}
+                }
                 this.animDirection = it.animDirection ?: AnimDirection.RIGHT
+            } ?: run {
+                this.animDirection = AnimDirection.RIGHT
+
             }
         }
     }
@@ -74,11 +105,18 @@ object Player : Actor(), Targetable,Damageable {
 
         if (pendingStates.isNotEmpty()) {
             with(pendingStates.first()) {
-                batch?.draw(this.state?.animation?.getKeyFrame(this.animTime, true), x, y, width,
-                        height)
+                when(this@Player.animDirection) {
+                    AnimDirection.LEFT -> batch?.draw(this.state?.animation?.getKeyFrame(this.animTime, true), x + width, y, -width , height)
+                    AnimDirection.RIGHT -> batch?.draw(this.state?.animation?.getKeyFrame(this.animTime, true), x, y, width,
+                            height)
+                }
             }
         } else {
-            batch?.draw(idleTexture, x, y, width, height)
+            when(animDirection) {
+                AnimDirection.LEFT -> batch?.draw(idleTexture, x + width, y, -width , height)
+                AnimDirection.RIGHT -> batch?.draw(idleTexture, x, y, width,
+                        height)
+            }
         }
     }
 
