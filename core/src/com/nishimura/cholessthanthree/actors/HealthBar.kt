@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
 import com.nishimura.cholessthanthree.Assets
 import com.nishimura.cholessthanthree.MyGdxGame
-import com.nishimura.cholessthanthree.PlayerState
+import com.nishimura.cholessthanthree.player.Player
 
 
 class HealthBar : Actor() {

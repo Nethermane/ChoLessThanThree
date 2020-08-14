@@ -1,7 +1,6 @@
 package com.nishimura.cholessthanthree
 
-import com.nishimura.cholessthanthree.data.Card
-import com.nishimura.cholessthanthree.actors.Player
+import com.nishimura.cholessthanthree.card.Card
 
 /**
  * Class to manage the deck as an abstraction outside of combat

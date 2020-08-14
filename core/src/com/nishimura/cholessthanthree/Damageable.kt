@@ -4,4 +4,5 @@ interface Damageable {
     var maxHealth: Int
     var currentHealth: Int
     var isDead: Boolean
+    var block: Int
 }

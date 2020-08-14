@@ -11,7 +11,9 @@ import com.nishimura.cholessthanthree.PlayerState.getPlayerDraw
 import com.nishimura.cholessthanthree.PlayerState.handSize
 import com.nishimura.cholessthanthree.PlayerState.targetableEntities
 import com.nishimura.cholessthanthree.actors.*
-import com.nishimura.cholessthanthree.data.Card
+import com.nishimura.cholessthanthree.card.Card
+import com.nishimura.cholessthanthree.card.CardView
+import com.nishimura.cholessthanthree.player.Player
 
 
 object CombatDeckManager : Group() {

@@ -1,8 +1,8 @@
 {
-  class: com.nishimura.cholessthanthree.data.ListOfCards,
+  class: com.nishimura.cholessthanthree.card.ListOfCards,
   cards: [
     {
-      class: com.nishimura.cholessthanthree.data.Card,
+      class: com.nishimura.cholessthanthree.card.Card,
       "id": 0,
       "title": "Punch",
       "_onPlay": [
@@ -40,13 +40,13 @@
       "cost": 1
     },
     {
-      class: com.nishimura.cholessthanthree.data.Card,
+      class: com.nishimura.cholessthanthree.card.Card,
       "id": 1,
       "title": "Fireball",
       "_onPlay": [
         {
           "description": "Deal {{{power}}} to front enemy {{{repeat}}} times",
-          "effectType": DAMAGE,
+          "effectType": DAMAGE_FRONT,
           "power": 2,
           "repeat": 3
         }
@@ -58,14 +58,25 @@
       "cost": 2
     },
     {
-      class: com.nishimura.cholessthanthree.data.Card,
+      class: com.nishimura.cholessthanthree.card.Card,
       "id": 2,
       "title": "Block",
       "_onPlay": [
         {
           "description": "Block {{{power}}} damage",
-          "effectType": BLOCK,
-          "power": 4
+          "effectType": BLOCK_SELF,
+          "power": 4,
+          "anim": [
+            {
+              class: com.nishimura.cholessthanthree.player.AnimState,
+              "state": Block,
+            },
+            {
+              class: com.nishimura.cholessthanthree.player.AnimState,
+              "state": Block,
+              "reversed": true
+            }
+          ]
         }
       ],
       //Neutral color

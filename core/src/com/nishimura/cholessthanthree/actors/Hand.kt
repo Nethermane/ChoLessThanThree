@@ -11,11 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.nishimura.cholessthanthree.Assets
 import com.nishimura.cholessthanthree.MyGdxGame
 import com.nishimura.cholessthanthree.PlayerState
-import com.nishimura.cholessthanthree.PlayerState.currentHand
 import com.nishimura.cholessthanthree.PlayerState.targetableEntities
-import com.nishimura.cholessthanthree.actors.CardView.Companion.cardWidth
-import com.nishimura.cholessthanthree.actors.CardView.Companion.resolutionTime
-import com.nishimura.cholessthanthree.data.Card
+import com.nishimura.cholessthanthree.card.CardView.Companion.cardWidth
+import com.nishimura.cholessthanthree.card.CardView.Companion.resolutionTime
+import com.nishimura.cholessthanthree.card.Card
+import com.nishimura.cholessthanthree.card.CardView
 import kotlin.math.abs
 
 

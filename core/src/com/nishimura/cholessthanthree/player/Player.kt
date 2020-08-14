@@ -1,4 +1,4 @@
-package com.nishimura.cholessthanthree.actors
+package com.nishimura.cholessthanthree.player
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Animation
@@ -13,9 +13,6 @@ import com.nishimura.cholessthanthree.Assets
 import com.nishimura.cholessthanthree.Damageable
 import com.nishimura.cholessthanthree.MyGdxGame
 import com.nishimura.cholessthanthree.Targetable
-import com.nishimura.cholessthanthree.player.AnimActionType
-import com.nishimura.cholessthanthree.player.AnimDirection
-import com.nishimura.cholessthanthree.player.AnimState
 
 
 object Player : Actor(), Targetable,Damageable {
@@ -29,6 +26,7 @@ object Player : Actor(), Targetable,Damageable {
     override var maxHealth = 70
     override var currentHealth = maxHealth
     override var isDead = false
+    override var block = 0
     val runFastAnim = Animation<TextureRegion>(0.02f, Assets.atlas.findRegions("runFast/runFast"),
             PlayMode.LOOP)
     private val pendingStates = ArrayList<AnimState>()
@@ -39,14 +37,10 @@ object Player : Actor(), Targetable,Damageable {
             pendingStates.clear()
             clearActions()
             setPosition(0f, MyGdxGame.HEIGHT * 0.4f)
+        states.forEach { it.target = target }
         if(pendingStates.isEmpty() && states.isNotEmpty()) {
-            this.animDirection = states.first().animDirection ?: AnimDirection.RIGHT
-            states.forEach { it.target = target }
-            when(states.first().animActionType) {
-                AnimActionType.MOVE_TO_ENEMY -> addAction(Actions.moveTo(states.first().target!!.getTargetX()-width,y, states.first().totalDuration))
-                AnimActionType.MOVE_TO_REST -> addAction(Actions.moveTo(0f, MyGdxGame.HEIGHT * 0.4f, states.first().totalDuration))
-                AnimActionType.NONE -> {}
-            }
+            animDirection = states.first().animDirection ?: AnimDirection.RIGHT
+            addActionForAnimActionType(states.first())
         }
         pendingStates.addAll(states)
     }
@@ -78,6 +72,7 @@ object Player : Actor(), Targetable,Damageable {
 
     override fun act(delta: Float) {
         super.act(delta)
+        println(pendingStates.size)
         //Increment animation time based on world time
         pendingStates.firstOrNull()?.let {
             it.animTime += delta
@@ -86,17 +81,20 @@ object Player : Actor(), Targetable,Damageable {
         while (pendingStates.isNotEmpty() && pendingStates.first().isDone()) {
             val oldState = pendingStates.removeAt(0)
             pendingStates.firstOrNull()?.let {
-                it.animTime += oldState.getOverFlowedTime()
-                when(it.animActionType) {
-                    AnimActionType.MOVE_TO_ENEMY -> addAction(Actions.moveTo(it.target!!.getTargetX()-width,y, it.totalDuration))
-                    AnimActionType.MOVE_TO_REST -> addAction(Actions.moveTo(0f, MyGdxGame.HEIGHT * 0.4f, it.totalDuration))
-                    AnimActionType.NONE -> {}
-                }
-                this.animDirection = it.animDirection ?: AnimDirection.RIGHT
+                it.animTime = oldState.getOverFlowedTime()
+                addActionForAnimActionType(it)
+                animDirection = it.animDirection ?: AnimDirection.RIGHT
             } ?: run {
-                this.animDirection = AnimDirection.RIGHT
+                animDirection = AnimDirection.RIGHT
 
             }
+        }
+    }
+    fun addActionForAnimActionType(animState: AnimState) {
+        when(animState.animActionType) {
+            AnimActionType.MOVE_TO_ENEMY -> addAction(Actions.moveTo(animState.target!!.getTargetX()-width,y, animState.totalDuration))
+            AnimActionType.MOVE_TO_REST -> addAction(Actions.moveTo(0f, MyGdxGame.HEIGHT * 0.4f, animState.totalDuration))
+            AnimActionType.NONE -> {}
         }
     }
     override fun draw(batch: Batch?, parentAlpha: Float) {
@@ -105,11 +103,16 @@ object Player : Actor(), Targetable,Damageable {
 
         if (pendingStates.isNotEmpty()) {
             with(pendingStates.first()) {
-                when(this@Player.animDirection) {
-                    AnimDirection.LEFT -> batch?.draw(this.state?.animation?.getKeyFrame(this.animTime, true), x + width, y, -width , height)
-                    AnimDirection.RIGHT -> batch?.draw(this.state?.animation?.getKeyFrame(this.animTime, true), x, y, width,
+                if(this.reversed) {
+                    this.state?.animation?.playMode = PlayMode.LOOP_REVERSED
+                }
+                val frame = this.state?.animation?.getKeyFrame(this.animTime, true)
+                when(Player.animDirection) {
+                    AnimDirection.LEFT -> batch?.draw(frame, x + width, y, -width , height)
+                    AnimDirection.RIGHT -> batch?.draw(frame, x, y, width,
                             height)
                 }
+                this.state?.animation?.playMode = PlayMode.LOOP
             }
         } else {
             when(animDirection) {

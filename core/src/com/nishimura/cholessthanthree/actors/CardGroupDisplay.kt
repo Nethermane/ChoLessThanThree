@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
-import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
@@ -15,7 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
 import com.nishimura.cholessthanthree.Assets
 import com.nishimura.cholessthanthree.MyGdxGame
-import com.nishimura.cholessthanthree.data.Card
+import com.nishimura.cholessthanthree.card.Card
+import com.nishimura.cholessthanthree.card.CardView
 
 
 object CardGroupDisplay : Group() {
@@ -63,7 +63,7 @@ object CardGroupDisplay : Group() {
     fun setCards(cards: List<Card>) {
         tableOfCards.clear()
         val cardsInARow = 5
-        for ((index, card) in cards.map{CardView(it)}.withIndex()) {
+        for ((index, card) in cards.map{ CardView(it) }.withIndex()) {
             val clonedNewCard = card.toDisplayCard()
             val cell = tableOfCards.add(clonedNewCard)
                     .padTop(CardView.cardGroupDisplayWidth / 2)

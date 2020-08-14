@@ -1,4 +1,4 @@
-package com.nishimura.cholessthanthree.actors
+package com.nishimura.cholessthanthree.card
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
@@ -7,9 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Bezier
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
-import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.Group
-import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.*
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -18,11 +16,13 @@ import com.badlogic.gdx.utils.Align
 import com.nishimura.cholessthanthree.*
 import com.nishimura.cholessthanthree.PlayerState.handSize
 import com.nishimura.cholessthanthree.PlayerState.mana
+import com.nishimura.cholessthanthree.actors.DeckButton
+import com.nishimura.cholessthanthree.actors.DiscardButton
+import com.nishimura.cholessthanthree.actors.Hand
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.properties.Delegates
-import com.nishimura.cholessthanthree.data.Card
 
 
 class CardView(val card: Card) : Targetable, Group() {
@@ -69,10 +69,13 @@ class CardView(val card: Card) : Targetable, Group() {
     //State of the card (to determine what actions are acceptable
     var cardDisplayState: CardDisplayState by Delegates.observable(
             CardDisplayState.UNKNOWN) { property, oldValue, newValue ->
+        if (newValue == oldValue) {
+            return@observable
+        }
         when (newValue) {
             CardDisplayState.DRAWING -> {
                 val absIndexFromMiddle = abs(PlayerState.currentHand.size / 2)
-                restingX = MyGdxGame.WIDTH * 0.5f + (PlayerState.currentHand.size / 2 - (PlayerState.currentHand.size - 1)) * CardView.cardWidth
+                restingX = MyGdxGame.WIDTH * 0.5f + (PlayerState.currentHand.size / 2 - (PlayerState.currentHand.size - 1)) * cardWidth
                 restingY = -(cardHeight / 3f + absIndexFromMiddle * cardHeight / PlayerState.currentHand.size / 2f)
                 restingRotation = -((180f / 16f * (-PlayerState.currentHand.size / 2)))
                 setPosition(DeckButton.x, DeckButton.y)
@@ -126,8 +129,8 @@ class CardView(val card: Card) : Targetable, Group() {
                 //If you finished drawing do the move instantly
                 if (oldValue == CardDisplayState.DRAWING)
                     addAction(Actions.parallel(Actions.scaleTo(1f, 1f),
-                                    Actions.moveTo(restingX, restingY),
-                                    Actions.rotateTo(restingRotation)))
+                            Actions.moveTo(restingX, restingY),
+                            Actions.rotateTo(restingRotation)))
                 //Otherwise, interpolate and return to hand slowly
                 else
                     addAction(
@@ -156,7 +159,7 @@ class CardView(val card: Card) : Targetable, Group() {
     override fun act(delta: Float) {
         super.act(delta)
         if (cardDisplayState == CardDisplayState.TARGETTING)
-            if (card.onPlay?.first()?.targets == null)
+            if (card.onPlay.first().targets == null)
                 moveTo(stage.screenToStageCoordinates(Vector2(Gdx.input.x.toFloat(),
                         Gdx.input.y.toFloat())))
         if (this@CardView == focused && touchDown && this@CardView.card.onPlay?.first()?.targets != null) {
@@ -170,7 +173,7 @@ class CardView(val card: Card) : Targetable, Group() {
             )
             pathFromCardToMouse.set(*controlPoints)
         }
-        if(card.internalDesccription != descText.text.toString()) {
+        if (card.internalDesccription != descText.text.toString()) {
             descText.setText(card.internalDesccription)
         }
     }
@@ -203,7 +206,10 @@ class CardView(val card: Card) : Targetable, Group() {
             }
 
     //The image to be displayed by the card
-    val cardBackground = Image(Assets.combinedCard).also{it.setFillParent(true)}
+    val cardBackground = Image(Assets.combinedCard).also {
+        it.setFillParent(true)
+        touchable = Touchable.disabled
+    }
 
     //The label of the mana cost
     val manaCostLabel = Label(cost.toString(),
@@ -212,27 +218,29 @@ class CardView(val card: Card) : Targetable, Group() {
         val size = cardWidth / 3
         it.setSize(size, size)
         it.setPosition(cardWidth / 2 - size / 2, cardHeight - size)
+        touchable = Touchable.disabled
     }
     val descText = Label(card.internalDesccription,
             Label.LabelStyle(Assets.defaultFont, Color.BLACK)).also {
         it.setAlignment(Align.center)
-        val width = cardWidth*0.8f
-        val height = cardHeight*0.4f
+        val width = cardWidth * 0.8f
+        val height = cardHeight * 0.4f
         it.setSize(width, height)
         it.setPosition(cardWidth / 2 - width / 2, 0f)
         it.wrap = true
-        it.debug()
+        touchable = Touchable.disabled
     }
 
 
     init {
         setSize(cardWidth, cardHeight)
         setOrigin(width / 2f, height / 2f)
+        touchable = Touchable.enabled
         addActor(cardBackground)
         addActor(manaCostLabel)
         addActor(descText)
         //The general case listener for cards being in the hand
-        addListener(object : ClickListener() {
+        addListener(object : InputListener() {
             override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int,
                                fromActor: Actor?) {
                 //If no card is presently being held, hovering does it's growing thing
@@ -243,6 +251,7 @@ class CardView(val card: Card) : Targetable, Group() {
                         it.cardDisplayState = CardDisplayState.HOVERING
                     }
                 }
+                super.enter(event, x, y, pointer, fromActor)
             }
 
             override fun exit(event: InputEvent?, x: Float, y: Float, pointer: Int,
@@ -253,30 +262,34 @@ class CardView(val card: Card) : Targetable, Group() {
                     focused?.cardDisplayState = CardDisplayState.RESTING
                     focused = null
                 }
+                super.exit(event, x, y, pointer, toActor)
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int,
                                  button: Int) {
                 val targetableClasses = focused?.card?.onPlay?.firstOrNull()?.targets?.getClassesForTarget()
-
-                if (focused != null &&
-                        touchDown &&
-                        focused?.card?.onPlay?.firstOrNull()?.targets == null &&
-                        mana >= cost && event!!.stageY > MyGdxGame.HEIGHT/0.3f) {
-                    mana -= cost
-                    card.onPlay(null)
-                } else if(focused != null &&
-                        touchDown &&
-                        mana >= cost) {
-                    PlayerState.targetableEntities.firstOrNull { entity ->
-                        targetableClasses?.let { clzs ->
-                            clzs.any { clz -> clz.isInstance(entity) }
-                                    && entity.hit(event!!.stageX, event.stageY)
-                        } ?: false
-                    }?.let {
+                if (focused != null && touchDown && event!!.stageY > MyGdxGame.HEIGHT * 0.3f && mana >= cost) {
+                    //No target card
+                    if (focused?.card?.onPlay?.firstOrNull()?.targets == null) {
                         mana -= cost
-                        card.onPlay(it)
+                        card.onPlay(null)
                         PlayerState.cardPlayed(card)
+
+                    } else {
+                        //Tagetted card and the selected
+                        PlayerState.targetableEntities.firstOrNull { entity ->
+                            targetableClasses?.let { clzs ->
+                                clzs.any { clz -> clz.isInstance(entity) }
+                                        && entity.hit(event.stageX, event.stageY)
+                            } ?: false
+                        }?.let {
+                            mana -= cost
+                            card.onPlay(it)
+                            PlayerState.cardPlayed(card)
+                        } ?: run {
+                            //No valid target found on mouse
+                            focused?.cardDisplayState = CardDisplayState.RESTING
+                        }
                     }
                 } else {
                     focused?.cardDisplayState = CardDisplayState.RESTING
@@ -291,20 +304,21 @@ class CardView(val card: Card) : Targetable, Group() {
                                    button: Int): Boolean {
                 touchDown = true
                 focused?.cardDisplayState = CardDisplayState.TARGETTING
-                return super.touchDown(event, x, y, pointer, button)
+                return true
             }
 
         })
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        if(card.cost <= PlayerState.mana && cardDisplayState != CardDisplayState.DISCARDING) {
-            renderWithGreenOutline(batch,parentAlpha)
+        if (card.cost <= PlayerState.mana && cardDisplayState != CardDisplayState.DISCARDING) {
+            renderWithGreenOutline(batch, parentAlpha)
         } else {
             super.draw(batch, parentAlpha)
         }
 
     }
+
     private fun renderWithGreenOutline(batch: Batch?, parentAlpha: Float) {
         Assets.outlineShader.let {
             batch!!.end()
@@ -325,7 +339,7 @@ class CardView(val card: Card) : Targetable, Group() {
         }
         //Draw the text for the mana cost
         cardBackground.isVisible = false
-        super.draw(batch,parentAlpha)
+        super.draw(batch, parentAlpha)
         cardBackground.isVisible = true
     }
 

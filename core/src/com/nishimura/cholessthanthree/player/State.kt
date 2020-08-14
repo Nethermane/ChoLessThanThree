@@ -18,6 +18,12 @@ enum class State(val animation: Animation<TextureRegion>) {
                     (1f / 24f),
                     Assets.atlas.findRegions(
                             "rightPunch/rightPunch"),
+                    Animation.PlayMode.LOOP)),
+    Block(
+            Animation<TextureRegion>(
+                    (1f / 24f),
+                    Assets.atlas.findRegions(
+                            "enter_block/enter_block"),
                     Animation.PlayMode.LOOP));
 
     open operator fun next(): State {

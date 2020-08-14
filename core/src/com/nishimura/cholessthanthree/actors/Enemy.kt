@@ -12,6 +12,7 @@ import com.nishimura.cholessthanthree.MyGdxGame
 import com.nishimura.cholessthanthree.Targetable
 
 abstract class Enemy: Image(), Targetable, Damageable {
+    override var block = 0
     override fun hit(x: Float, y: Float): Boolean {
         return  (x >= this.x && x < width+this.x && y >= this.y && y < height+this.y)
     }

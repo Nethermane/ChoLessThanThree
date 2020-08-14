@@ -3,7 +3,6 @@ package com.nishimura.cholessthanthree.screens
 import com.badlogic.gdx.*
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -14,9 +13,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import com.nishimura.cholessthanthree.Assets
 import com.nishimura.cholessthanthree.CombatDeckManager
 import com.nishimura.cholessthanthree.MyGdxGame
-import com.nishimura.cholessthanthree.PlayerState
 import com.nishimura.cholessthanthree.actors.HealthBar
-import com.nishimura.cholessthanthree.actors.Player
+import com.nishimura.cholessthanthree.player.Player
 import ktx.app.KtxScreen
 
 
