@@ -6,14 +6,14 @@ filter: MipMapLinearLinear,MipMapLinearLinear
 repeat: none
 back_label_left
   rotate: false
-  xy: 2688, 1523
+  xy: 3328, 3123
   size: 512, 125
   orig: 512, 125
   offset: 0, 0
   index: -1
 bird
   rotate: false
-  xy: 1536, 1280
+  xy: 1536, 1344
   size: 512, 128
   orig: 512, 128
   offset: 0, 0
@@ -25,58 +25,51 @@ blackCircle
   orig: 1280, 1280
   offset: 0, 0
   index: -1
-cardBack
+block
   rotate: false
-  xy: 3328, 2928
-  size: 512, 960
-  orig: 512, 960
+  xy: 2176, 2224
+  size: 512, 512
+  orig: 512, 512
   offset: 0, 0
   index: -1
-cardGlow
+cardBack
   rotate: false
-  xy: 2688, 1776
+  xy: 1536, 1600
   size: 512, 960
   orig: 512, 960
   offset: 0, 0
   index: -1
 cardTemp
   rotate: false
-  xy: 1280, 640
+  xy: 2816, 2224
   size: 256, 512
   orig: 256, 512
   offset: 0, 0
   index: -1
 character
   rotate: false
-  xy: 3328, 2288
+  xy: 3328, 3376
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 color_cursor
   rotate: false
-  xy: 3328, 1648
+  xy: 2176, 1584
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 drawPileLabelBackground
   rotate: false
-  xy: 1280, 256
+  xy: 2816, 1840
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
-manaGlow
-  rotate: false
-  xy: 2176, 2864
-  size: 1024, 1024
-  orig: 1024, 1024
-  offset: 0, 0
-  index: -1
 mana_icon
   rotate: false
-  xy: 128, 128
+  xy: 2176, 2864
   size: 1024, 1024
   orig: 1024, 1024
   offset: 0, 0
@@ -90,7 +83,7 @@ paper
   index: -1
 test
   rotate: false
-  xy: 1536, 1536
+  xy: 128, 128
   size: 1024, 1024
   orig: 1024, 1024
   offset: 0, 0
@@ -968,6 +961,918 @@ dance/dance
   index: 119
 
 atlas_name6.png
+size: 4096,4096
+format: RGBA8888
+filter: MipMapLinearLinear,MipMapLinearLinear
+repeat: none
+enter_block/enter_block
+  rotate: false
+  xy: 128, 3328
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 0
+enter_block/enter_block
+  rotate: false
+  xy: 128, 2688
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 1
+enter_block/enter_block
+  rotate: false
+  xy: 768, 3328
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 2
+enter_block/enter_block
+  rotate: false
+  xy: 128, 2048
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 3
+enter_block/enter_block
+  rotate: false
+  xy: 768, 2688
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 4
+enter_block/enter_block
+  rotate: false
+  xy: 1408, 3328
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 5
+enter_block/enter_block
+  rotate: false
+  xy: 128, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 6
+enter_block/enter_block
+  rotate: false
+  xy: 768, 2048
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 7
+enter_block/enter_block
+  rotate: false
+  xy: 1408, 2688
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 8
+enter_block/enter_block
+  rotate: false
+  xy: 2048, 3328
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 9
+enter_block/enter_block
+  rotate: false
+  xy: 128, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 10
+enter_block/enter_block
+  rotate: false
+  xy: 768, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 11
+enter_block/enter_block
+  rotate: false
+  xy: 1408, 2048
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 12
+enter_block/enter_block
+  rotate: false
+  xy: 2048, 2688
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 13
+enter_block/enter_block
+  rotate: false
+  xy: 2688, 3328
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 14
+enter_block/enter_block
+  rotate: false
+  xy: 128, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 15
+enter_block/enter_block
+  rotate: false
+  xy: 768, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 16
+enter_block/enter_block
+  rotate: false
+  xy: 1408, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 17
+enter_block/enter_block
+  rotate: false
+  xy: 2048, 2048
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 18
+enter_block/enter_block
+  rotate: false
+  xy: 2688, 2688
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 19
+enter_block/enter_block
+  rotate: false
+  xy: 3328, 3328
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 20
+enter_block/enter_block
+  rotate: false
+  xy: 768, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 21
+enter_block/enter_block
+  rotate: false
+  xy: 1408, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 22
+enter_block/enter_block
+  rotate: false
+  xy: 2048, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 23
+enter_block/enter_block
+  rotate: false
+  xy: 2688, 2048
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 24
+enter_block/enter_block
+  rotate: false
+  xy: 3328, 2688
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 25
+enter_block/enter_block
+  rotate: false
+  xy: 1408, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 26
+enter_block/enter_block
+  rotate: false
+  xy: 2048, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 27
+enter_block/enter_block
+  rotate: false
+  xy: 2688, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 28
+enter_block/enter_block
+  rotate: false
+  xy: 3328, 2048
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 29
+enter_block/enter_block
+  rotate: false
+  xy: 2048, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 30
+enter_block/enter_block
+  rotate: false
+  xy: 2688, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 31
+enter_block/enter_block
+  rotate: false
+  xy: 3328, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 32
+enter_block/enter_block
+  rotate: false
+  xy: 2688, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 33
+enter_block/enter_block
+  rotate: false
+  xy: 3328, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 34
+enter_block/enter_block
+  rotate: false
+  xy: 3328, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 35
+
+atlas_name7.png
+size: 1024,1024
+format: RGBA8888
+filter: MipMapLinearLinear,MipMapLinearLinear
+repeat: none
+enter_block/enter_block
+  rotate: false
+  xy: 128, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 36
+
+atlas_name8.png
+size: 4096,4096
+format: RGBA8888
+filter: MipMapLinearLinear,MipMapLinearLinear
+repeat: none
+hadouken/hadouken
+  rotate: false
+  xy: 128, 3328
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 0
+hadouken/hadouken
+  rotate: false
+  xy: 128, 2688
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 1
+hadouken/hadouken
+  rotate: false
+  xy: 768, 3328
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 2
+hadouken/hadouken
+  rotate: false
+  xy: 128, 2048
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 3
+hadouken/hadouken
+  rotate: false
+  xy: 768, 2688
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 4
+hadouken/hadouken
+  rotate: false
+  xy: 1408, 3328
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 5
+hadouken/hadouken
+  rotate: false
+  xy: 128, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 6
+hadouken/hadouken
+  rotate: false
+  xy: 768, 2048
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 7
+hadouken/hadouken
+  rotate: false
+  xy: 1408, 2688
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 8
+hadouken/hadouken
+  rotate: false
+  xy: 2048, 3328
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 9
+hadouken/hadouken
+  rotate: false
+  xy: 128, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 10
+hadouken/hadouken
+  rotate: false
+  xy: 768, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 11
+hadouken/hadouken
+  rotate: false
+  xy: 1408, 2048
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 12
+hadouken/hadouken
+  rotate: false
+  xy: 2048, 2688
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 13
+hadouken/hadouken
+  rotate: false
+  xy: 2688, 3328
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 14
+hadouken/hadouken
+  rotate: false
+  xy: 128, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 15
+hadouken/hadouken
+  rotate: false
+  xy: 768, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 16
+hadouken/hadouken
+  rotate: false
+  xy: 1408, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 17
+hadouken/hadouken
+  rotate: false
+  xy: 2048, 2048
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 18
+hadouken/hadouken
+  rotate: false
+  xy: 2688, 2688
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 19
+hadouken/hadouken
+  rotate: false
+  xy: 3328, 3328
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 20
+hadouken/hadouken
+  rotate: false
+  xy: 768, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 21
+hadouken/hadouken
+  rotate: false
+  xy: 1408, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 22
+hadouken/hadouken
+  rotate: false
+  xy: 2048, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 23
+hadouken/hadouken
+  rotate: false
+  xy: 2688, 2048
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 24
+hadouken/hadouken
+  rotate: false
+  xy: 3328, 2688
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 25
+hadouken/hadouken
+  rotate: false
+  xy: 1408, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 26
+hadouken/hadouken
+  rotate: false
+  xy: 2048, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 27
+hadouken/hadouken
+  rotate: false
+  xy: 2688, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 28
+hadouken/hadouken
+  rotate: false
+  xy: 3328, 2048
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 29
+hadouken/hadouken
+  rotate: false
+  xy: 2048, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 30
+hadouken/hadouken
+  rotate: false
+  xy: 2688, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 31
+hadouken/hadouken
+  rotate: false
+  xy: 3328, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 32
+hadouken/hadouken
+  rotate: false
+  xy: 2688, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 33
+hadouken/hadouken
+  rotate: false
+  xy: 3328, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 34
+hadouken/hadouken
+  rotate: false
+  xy: 3328, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 35
+
+atlas_name9.png
+size: 4096,4096
+format: RGBA8888
+filter: MipMapLinearLinear,MipMapLinearLinear
+repeat: none
+hadouken/hadouken
+  rotate: false
+  xy: 128, 3328
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 36
+hadouken/hadouken
+  rotate: false
+  xy: 128, 2688
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 37
+hadouken/hadouken
+  rotate: false
+  xy: 768, 3328
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 38
+hadouken/hadouken
+  rotate: false
+  xy: 128, 2048
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 39
+hadouken/hadouken
+  rotate: false
+  xy: 768, 2688
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 40
+hadouken/hadouken
+  rotate: false
+  xy: 1408, 3328
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 41
+hadouken/hadouken
+  rotate: false
+  xy: 128, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 42
+hadouken/hadouken
+  rotate: false
+  xy: 768, 2048
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 43
+hadouken/hadouken
+  rotate: false
+  xy: 1408, 2688
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 44
+hadouken/hadouken
+  rotate: false
+  xy: 2048, 3328
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 45
+hadouken/hadouken
+  rotate: false
+  xy: 128, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 46
+hadouken/hadouken
+  rotate: false
+  xy: 768, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 47
+hadouken/hadouken
+  rotate: false
+  xy: 1408, 2048
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 48
+hadouken/hadouken
+  rotate: false
+  xy: 2048, 2688
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 49
+hadouken/hadouken
+  rotate: false
+  xy: 2688, 3328
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 50
+hadouken/hadouken
+  rotate: false
+  xy: 128, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 51
+hadouken/hadouken
+  rotate: false
+  xy: 768, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 52
+hadouken/hadouken
+  rotate: false
+  xy: 1408, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 53
+hadouken/hadouken
+  rotate: false
+  xy: 2048, 2048
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 54
+hadouken/hadouken
+  rotate: false
+  xy: 2688, 2688
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 55
+hadouken/hadouken
+  rotate: false
+  xy: 3328, 3328
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 56
+hadouken/hadouken
+  rotate: false
+  xy: 768, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 57
+hadouken/hadouken
+  rotate: false
+  xy: 1408, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 58
+hadouken/hadouken
+  rotate: false
+  xy: 2048, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 59
+hadouken/hadouken
+  rotate: false
+  xy: 2688, 2048
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 60
+hadouken/hadouken
+  rotate: false
+  xy: 3328, 2688
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 61
+hadouken/hadouken
+  rotate: false
+  xy: 1408, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 62
+hadouken/hadouken
+  rotate: false
+  xy: 2048, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 63
+hadouken/hadouken
+  rotate: false
+  xy: 2688, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 64
+hadouken/hadouken
+  rotate: false
+  xy: 3328, 2048
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 65
+hadouken/hadouken
+  rotate: false
+  xy: 2048, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 66
+hadouken/hadouken
+  rotate: false
+  xy: 2688, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 67
+hadouken/hadouken
+  rotate: false
+  xy: 3328, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 68
+hadouken/hadouken
+  rotate: false
+  xy: 2688, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 69
+hadouken/hadouken
+  rotate: false
+  xy: 3328, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 70
+hadouken/hadouken
+  rotate: false
+  xy: 3328, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 71
+
+atlas_name10.png
+size: 4096,2048
+format: RGBA8888
+filter: MipMapLinearLinear,MipMapLinearLinear
+repeat: none
+hadouken/hadouken
+  rotate: false
+  xy: 128, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 72
+hadouken/hadouken
+  rotate: false
+  xy: 128, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 73
+hadouken/hadouken
+  rotate: false
+  xy: 128, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 74
+hadouken/hadouken
+  rotate: false
+  xy: 768, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 75
+hadouken/hadouken
+  rotate: false
+  xy: 768, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 76
+hadouken/hadouken
+  rotate: false
+  xy: 768, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 77
+hadouken/hadouken
+  rotate: false
+  xy: 1408, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 78
+hadouken/hadouken
+  rotate: false
+  xy: 1408, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 79
+hadouken/hadouken
+  rotate: false
+  xy: 1408, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 80
+hadouken/hadouken
+  rotate: false
+  xy: 2048, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 81
+hadouken/hadouken
+  rotate: false
+  xy: 2048, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 82
+hadouken/hadouken
+  rotate: false
+  xy: 2048, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 83
+hadouken/hadouken
+  rotate: false
+  xy: 2688, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 84
+hadouken/hadouken
+  rotate: false
+  xy: 2688, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 85
+hadouken/hadouken
+  rotate: false
+  xy: 2688, 128
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 86
+hadouken/hadouken
+  rotate: false
+  xy: 3328, 1408
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 87
+hadouken/hadouken
+  rotate: false
+  xy: 3328, 768
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: 88
+
+atlas_name11.png
 size: 4096,2048
 format: RGBA8888
 filter: MipMapLinearLinear,MipMapLinearLinear
@@ -1069,7 +1974,7 @@ leftPunch/leftPunch
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
-  index: 15
+  index: 14
 leftPunch/leftPunch
   rotate: false
   xy: 2688, 1408
@@ -1083,9 +1988,9 @@ leftPunch/leftPunch
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
-  index: 14
+  index: 15
 
-atlas_name7.png
+atlas_name12.png
 size: 4096,2048
 format: RGBA8888
 filter: MipMapLinearLinear,MipMapLinearLinear
@@ -1203,7 +2108,7 @@ rightPunch/rightPunch
   offset: 0, 0
   index: 15
 
-atlas_name8.png
+atlas_name13.png
 size: 4096,4096
 format: RGBA8888
 filter: MipMapLinearLinear,MipMapLinearLinear

@@ -11,21 +11,21 @@
           "effectType": DAMAGE,
           "power": 6,
           "targets": ENEMY,
-          "anim": [
+          "animations": [
             {
               class: com.nishimura.cholessthanthree.player.AnimState,
-              "state": Running,
+              "anim": Running,
               "repetitions": 1,
               "animActionType": MOVE_TO_ENEMY
             },
             {
               class: com.nishimura.cholessthanthree.player.AnimState,
-              "state": Punching,
+              "anim": Punching,
               "repetitions": 1
             },
             {
               class: com.nishimura.cholessthanthree.player.AnimState,
-              "state": Running,
+              "anim": Running,
               "repetitions": 1,
               "animActionType": MOVE_TO_REST,
               "animDirection": LEFT
@@ -48,7 +48,13 @@
           "description": "Deal {{{power}}} to front enemy {{{repeat}}} times",
           "effectType": DAMAGE_FRONT,
           "power": 2,
-          "repeat": 3
+          "repeat": 3,
+          "animations": [
+            {
+              class: com.nishimura.cholessthanthree.player.AnimState,
+              "anim": Hadouken,
+            }
+          ]
         }
       ],
       //Neutral color
@@ -66,14 +72,14 @@
           "description": "Block {{{power}}} damage",
           "effectType": BLOCK_SELF,
           "power": 4,
-          "anim": [
+          "animations": [
             {
               class: com.nishimura.cholessthanthree.player.AnimState,
-              "state": Block,
+              "anim": Block,
             },
             {
               class: com.nishimura.cholessthanthree.player.AnimState,
-              "state": Block,
+              "anim": Block,
               "reversed": true
             }
           ]

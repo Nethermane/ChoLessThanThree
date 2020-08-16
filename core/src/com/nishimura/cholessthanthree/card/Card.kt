@@ -18,9 +18,9 @@ class ListOfCards() {
 data class Card(var id: Int? = null,
                 var cost: Int = 0,
                 var title: String = "",
-                private var _onPlay: List<Effect> = emptyList(),
-                private var _onDiscard: List<Effect> = emptyList(),
-                private var _onDraw: List<Effect> = emptyList(),
+                private val _onPlay: List<Effect> = emptyList(),
+                private val _onDiscard: List<Effect> = emptyList(),
+                private val _onDraw: List<Effect> = emptyList(),
                 var color: CardColor = CardColor.NEUTRAL,
                 var rarity: CardRarity = CardRarity.COMMON) {
     companion object {

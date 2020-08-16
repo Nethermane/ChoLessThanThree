@@ -33,10 +33,11 @@ object Player : Actor(), Targetable,Damageable {
     var entered = false
     val idleTexture = Assets.atlas.findRegion(Assets.character)
     fun executeStates(states: List<AnimState>, target:Targetable?, clear:Boolean = false) {
-        if(clear)
+        if(clear) {
             pendingStates.clear()
             clearActions()
             setPosition(0f, MyGdxGame.HEIGHT * 0.4f)
+        }
         states.forEach { it.target = target }
         if(pendingStates.isEmpty() && states.isNotEmpty()) {
             animDirection = states.first().animDirection ?: AnimDirection.RIGHT
@@ -104,15 +105,15 @@ object Player : Actor(), Targetable,Damageable {
         if (pendingStates.isNotEmpty()) {
             with(pendingStates.first()) {
                 if(this.reversed) {
-                    this.state?.animation?.playMode = PlayMode.LOOP_REVERSED
+                    this.anim?.animation?.playMode = PlayMode.LOOP_REVERSED
                 }
-                val frame = this.state?.animation?.getKeyFrame(this.animTime, true)
+                val frame = this.anim?.animation?.getKeyFrame(this.animTime, true)
                 when(Player.animDirection) {
                     AnimDirection.LEFT -> batch?.draw(frame, x + width, y, -width , height)
                     AnimDirection.RIGHT -> batch?.draw(frame, x, y, width,
                             height)
                 }
-                this.state?.animation?.playMode = PlayMode.LOOP
+                this.anim?.animation?.playMode = PlayMode.LOOP
             }
         } else {
             when(animDirection) {

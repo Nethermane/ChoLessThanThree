@@ -12,13 +12,13 @@ import kotlin.reflect.KClass
 
 class Effect() {
     constructor(effectType: EffectType, power: Int, targets: Targets?, description: String,
-                repeat: Int?, anim: List<AnimState>?) : this() {
+                repeat: Int?, animations: List<AnimState>?) : this() {
         this.effectType = effectType
         this.power = power
         this.targets = targets
         this.description = description
         this.repeat = repeat
-        this.anim = anim
+        this.animations = animations
     }
 
     lateinit var effectType: EffectType
@@ -26,7 +26,7 @@ class Effect() {
     var power: Int = 0
     var repeat: Int? = null
     var targets: Targets? = null
-    var anim: List<AnimState>? = null
+    var animations: List<AnimState>? = null
 
     enum class EffectType {
         DAMAGE, BLOCK_SELF, DAMAGE_FRONT
@@ -45,10 +45,10 @@ class Effect() {
     }
 
     fun executeEffect(target: Targetable?) {
-        anim?.let {
+        animations?.let {
             Player.executeStates(it, target)
         }
-        val totalTime: Float = anim?.sumByFloat { it.totalDuration*it.repetitions } ?: 0f
+        val totalTime: Float = animations?.sumByFloat { it.totalDuration*it.repetitions } ?: 0f
         Player.addAction(Actions.delay(totalTime, Actions.run {
             when (this.effectType) {
                 EffectType.DAMAGE -> {
