@@ -43,22 +43,25 @@ data class AnimState(val anim: Anim? = null, val repetitions: Int = 1,
         fun setTarget(startCharacter: Actor, target: Targetable, projectileMovePattern: ProejctileMovePattern = ProejctileMovePattern.DIRECT, alignTarget: Int = Align.center) {
             startCharacter.stage.addActor(this)
             with(projectileData) {
-                x = startingXPcnt * startCharacter.width + startCharacter.x - width / 2
-                y = startingYPcnt * startCharacter.width + startCharacter.y
+                x = startingXPcnt * startCharacter.width + startCharacter.x - width/2
+                y = startingYPcnt * startCharacter.height + startCharacter.y
                 rotation = startCharacter.rotation + startingAngle
                 val finalAngle = atan2(target.getTargetY() - y, target.getTargetX() - x).toDegree()
-//                for (projectileAction in this.preReleaseActions) {
-//                    val action = Actions.delay(projectileAction.delayPcnt * duration,
-//                            when (projectileAction.actionType) {
-//                                ProjectileAction.ProjectileActionType.SCALE -> {
-//                                    Actions.scaleTo(1f, 1f, projectileAction.durationPcnt * duration)
-//                                }
-//                                ProjectileAction.ProjectileActionType.MOVE -> {
-//                                    Actions.moveTo()
-//                                }
-//                            }
-//                    )
-//                }
+                for (projectileAction in this.preReleaseActions) {
+                    val action = Actions.delay(projectileAction.delayPcnt * duration,
+                            when (projectileAction.actionType) {
+                                ProjectileAction.ProjectileActionType.SCALE -> {
+                                    addAction(Actions.sequence(Actions.scaleTo(projectileAction.begin,projectileAction.begin)))
+                                    Actions.scaleTo(projectileAction.end, projectileAction.end, projectileAction.durationPcnt * duration)
+                                }
+                                ProjectileAction.ProjectileActionType.MOVE_END_TO_END_X -> {
+                                        Actions.moveTo(startCharacter.x+startCharacter.width-width/2,y,projectileAction.durationPcnt*duration)
+                                }
+                                else -> null
+                            }
+                    )
+                    addAction(action)
+                }
                 val action = when (projectileMovePattern) {
                     ProejctileMovePattern.DIRECT -> {
                         Actions.delay(delayPcnt * totalDuration, Actions.parallel(Actions.moveToAligned(target.getTargetX(), target.getTargetY(), alignTarget, travelDuration),
