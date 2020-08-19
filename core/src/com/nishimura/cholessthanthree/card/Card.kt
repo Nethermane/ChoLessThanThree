@@ -83,7 +83,7 @@ data class Card(var id: Int? = null,
     }
 
     //When this card is played
-    fun onPlay(target: Targetable?) {
+    fun onPlay(target: Targetable? = null) {
         onPlay.forEach { it.executeEffect(target) }
     }
 }

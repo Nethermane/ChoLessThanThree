@@ -16,6 +16,7 @@ import com.nishimura.cholessthanthree.Targetable
 
 
 object Player : Actor(), Targetable,Damageable {
+    val playerAnimSize = MyGdxGame.WIDTH*0.3f
     override fun getTargetX(): Float {
         return x
     }
@@ -42,6 +43,8 @@ object Player : Actor(), Targetable,Damageable {
         if(pendingStates.isEmpty() && states.isNotEmpty()) {
             animDirection = states.first().animDirection ?: AnimDirection.RIGHT
             addActionForAnimActionType(states.first())
+            //If projectile is not null then target wont be
+            states.first().projectile?.setTarget(this,target!!)
         }
         pendingStates.addAll(states)
     }
@@ -49,9 +52,7 @@ object Player : Actor(), Targetable,Damageable {
 
 
     init {
-        debug= true
-        val width = MyGdxGame.WIDTH * 0.3f
-        setSize(width, width * 1.06640625f)
+        setSize(playerAnimSize, playerAnimSize)
         setPosition(0f, MyGdxGame.HEIGHT * 0.4f)
         color = Color.BLACK
         addListener(object : ClickListener() {

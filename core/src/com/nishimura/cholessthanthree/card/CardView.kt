@@ -272,7 +272,7 @@ class CardView(val card: Card) : Targetable, Group() {
                     //No target card
                     if (focused?.card?.onPlay?.firstOrNull()?.targets == null) {
                         mana -= cost
-                        card.onPlay(null)
+                        card.onPlay()
                         PlayerState.cardPlayed(card)
 
                     } else {

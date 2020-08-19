@@ -53,6 +53,30 @@
             {
               class: com.nishimura.cholessthanthree.player.AnimState,
               "anim": Hadouken,
+              "projectileData": {
+                "class": com.nishimura.cholessthanthree.player.ProjectileData,
+                "startingXPcnt": 0.3642578125,
+                "startingYPcnt": 0.3046875,
+                "imageString": "circle",
+                "delayPcnt": 0.75,
+                "travelDuration": 0.5,
+                "preReleaseActions": [
+                  {
+                    "class": com.nishimura.cholessthanthree.player.ProjectileAction,
+                    "actionType": SCALE,
+                    "delayPcnt": 0.25,
+                    "durationPcnt": 0.25,
+                    "begin": 0.0,
+                    "end": 1.0
+                  },
+                  {
+                    "class": com.nishimura.cholessthanthree.player.ProjectileAction,
+                    "actionType": MOVE_END_TO_END_X,
+                    "delayPcnt": 0.5,
+                    "durationPcnt": 0.25
+                  }
+                ]
+              }
             }
           ]
         }
@@ -75,7 +99,7 @@
           "animations": [
             {
               class: com.nishimura.cholessthanthree.player.AnimState,
-              "anim": Block,
+              "anim": Block
             },
             {
               class: com.nishimura.cholessthanthree.player.AnimState,

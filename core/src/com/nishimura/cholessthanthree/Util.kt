@@ -27,3 +27,4 @@ inline fun <T> Iterable<T>.sumByFloat(selector: (T) -> Float): Float {
     }
     return sum
 }
+fun Float.toDegree(): Float = (this * 180f / Math.PI).toFloat()

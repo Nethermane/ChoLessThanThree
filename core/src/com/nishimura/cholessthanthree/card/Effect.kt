@@ -3,10 +3,11 @@ package com.nishimura.cholessthanthree.card
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.utils.GdxRuntimeException
 import com.nishimura.cholessthanthree.Damageable
+import com.nishimura.cholessthanthree.PlayerState
 import com.nishimura.cholessthanthree.Targetable
 import com.nishimura.cholessthanthree.actors.Enemy
-import com.nishimura.cholessthanthree.player.Player
 import com.nishimura.cholessthanthree.player.AnimState
+import com.nishimura.cholessthanthree.player.Player
 import com.nishimura.cholessthanthree.sumByFloat
 import kotlin.reflect.KClass
 
@@ -46,9 +47,14 @@ class Effect() {
 
     fun executeEffect(target: Targetable?) {
         animations?.let {
-            Player.executeStates(it, target)
+            Player.executeStates(it,
+                    target ?: when (this.effectType) {
+                        EffectType.DAMAGE_FRONT -> PlayerState.targetableEntities.firstOrNull { entity -> entity is Enemy }
+                        else -> null
+                    }
+            )
         }
-        val totalTime: Float = animations?.sumByFloat { it.totalDuration*it.repetitions } ?: 0f
+        val totalTime: Float = animations?.sumByFloat { it.totalDuration * it.repetitions } ?: 0f
         Player.addAction(Actions.delay(totalTime, Actions.run {
             when (this.effectType) {
                 EffectType.DAMAGE -> {

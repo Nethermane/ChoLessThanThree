@@ -18,11 +18,11 @@ abstract class Enemy: Image(), Targetable, Damageable {
     }
 
     override fun getTargetX(): Float {
-        return x
+        return x+width/2
     }
 
     override fun getTargetY(): Float {
-        return y
+        return y+height/2
     }
 
 }
