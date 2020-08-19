@@ -1,7 +1,6 @@
 package com.nishimura.cholessthanthree
 
-import com.nishimura.cholessthanthree.actors.Card
-import com.nishimura.cholessthanthree.actors.Player
+import com.nishimura.cholessthanthree.card.Card
 
 /**
  * Class to manage the deck as an abstraction outside of combat
@@ -14,15 +13,8 @@ object DeckManager {
     }
     private fun makeDefaultDeck() {
         _cards.clear()
-        for(i in 1 .. 3) {
-            _cards.add(Card(1, Card.OffensiveEffect()))
-        }
-        for(i in 1 .. 3) {
-            _cards.add(Card(1, Card.DefensiveEffect()))
-        }
-        for(i in 1 .. 2) {
-            _cards.add(Card(1, Card.UtilityEffect(),targets = listOf(Player::class)))
-        }
+        for(i in 0..10)
+            _cards.add(Card.allCards.random().copy())
     }
     fun getCardsForPlayDeckManager(): ArrayList<Card> {
         return ArrayList(_cards.shuffled())

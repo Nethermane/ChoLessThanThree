@@ -8,30 +8,28 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Align
 import com.nishimura.cholessthanthree.Assets
 import com.nishimura.cholessthanthree.MyGdxGame
-import com.nishimura.cholessthanthree.PlayerState
+import com.nishimura.cholessthanthree.player.Player
 
 
 class HealthBar : Actor() {
     private var textToRender = "hp:0000/0000"
-    private val healthListener = { textToRender = "hp:" + PlayerState.health + "/" + PlayerState.maxHealth }
     private val glyphlayout: GlyphLayout = GlyphLayout(Assets.healthFont, textToRender)
     private val textPaddingFromOvalVertical = MyGdxGame.HEIGHT/64f
     private val renderer = ShapeRenderer()
     init {
-        PlayerState.healthListeners.add(healthListener)
-        PlayerState.maxHealthlisteners.add(healthListener)
+
         width = MyGdxGame.WIDTH / 4
         //Ensure enough width to display font
         while (glyphlayout.width > width) {
             width+=MyGdxGame.WIDTH / 16
         }
         height = glyphlayout.height + textPaddingFromOvalVertical*2
-        healthListener.invoke()
 
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) {
-        val progress = PlayerState.health.toFloat() / PlayerState.maxHealth
+        textToRender = "hp:" + Player.currentHealth + "/" + Player.maxHealth
+        val progress = Player.currentHealth.toFloat() / Player.maxHealth
         //Project on same matrix so the shape rendering lines up properly
         if(renderer.projectionMatrix != batch.projectionMatrix)
             renderer.projectionMatrix = batch.projectionMatrix
@@ -47,8 +45,4 @@ class HealthBar : Actor() {
         super.draw(batch, parentAlpha)
     }
 
-    fun dispose() {
-        PlayerState.healthListeners.remove(healthListener)
-        PlayerState.maxHealthlisteners.remove(healthListener)
-    }
 }

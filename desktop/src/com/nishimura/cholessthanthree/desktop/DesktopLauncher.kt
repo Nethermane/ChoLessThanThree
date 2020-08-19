@@ -10,9 +10,9 @@ object DesktopLauncher {
     fun main(arg: Array<String>) {
         val config = LwjglApplicationConfiguration()
         config.samples =16
-        config.foregroundFPS = 0
-        config.backgroundFPS = -1
         config.vSyncEnabled = false
+        config.foregroundFPS = 0
+        config.backgroundFPS = 0
         LwjglApplication(MyGdxGame(), config)
     }
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector3
@@ -34,6 +35,9 @@ class MyGdxGame : Game() {
         HEIGHT = graphicsPrefs.getFloat("height", 768f)
         Gdx.graphics.setTitle("Stickman Roguelite Deckbuilder")
         this.setScreen(MenuScreen(this))
+        Gdx.app.log("KRU", "renderer: " + Gdx.gl.glGetString(GL20.GL_RENDERER));
+        Gdx.app.log("KRU", "vendor: " + Gdx.gl.glGetString(GL20.GL_VENDOR));
+        Gdx.app.log("KRU", "version: " + Gdx.gl.glGetString(GL20.GL_VERSION));
     }
 
     override fun render() {

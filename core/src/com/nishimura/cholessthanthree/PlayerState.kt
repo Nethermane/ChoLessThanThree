@@ -1,16 +1,14 @@
 package com.nishimura.cholessthanthree
 
-import com.nishimura.cholessthanthree.actors.Card
-import com.nishimura.cholessthanthree.actors.Player
+import com.nishimura.cholessthanthree.player.Player
 import com.nishimura.cholessthanthree.effects.Status
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
+import com.nishimura.cholessthanthree.card.Card
 
 
 object PlayerState {
-    val maxHealthlisteners = ArrayList<() -> Unit>()
-    val healthListeners = ArrayList<() -> Unit>()
     val currencyListeners = ArrayList<(old: Int, new: Int) -> Unit>()
     val manaListeners = ArrayList<(old: Int, new: Int) -> Unit>()
     val maxManaListeners = ArrayList<(old: Int, new: Int) -> Unit>()
@@ -21,6 +19,7 @@ object PlayerState {
     val turnListeners = ArrayList<(oldTurnNum: Int, newTurnNum: Int) -> Unit>()
 
 
+    var ignoreDiscard = false
     private val _currentHand: Stack<Card> = Stack()
     private val _discardPile: Stack<Card> = Stack()
     private val _drawPile: ArrayList<Card> = DeckManager.getCardsForPlayDeckManager()
@@ -98,20 +97,16 @@ object PlayerState {
         currentHand = _currentHand.toList()
     }
 
+    fun cardPlayed(card: Card) {
+        _currentHand.remove(card)
+        _discardPile.add(card)
+        ignoreDiscard = true
+        discardPile = _discardPile.toList()
+        currentHand = _currentHand.toList()
+        ignoreDiscard = false
+    }
 
-    // fires off every time value of the property changes
-    var maxHealth: Int by Delegates.observable(120) { property, oldValue, newValue ->
-        // do your stuff here
-        maxHealthlisteners.forEach {
-            it()
-        }
-    }
-    var health: Int by Delegates.observable(120) { property, oldValue, newValue ->
-        // do your stuff here
-        healthListeners.forEach {
-            it()
-        }
-    }
+
     var currency: Int by Delegates.observable(0) { property, oldValue, newValue ->
         // do your stuff here
         currencyListeners.forEach {

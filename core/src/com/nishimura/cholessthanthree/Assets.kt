@@ -14,8 +14,9 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import ktx.assets.getValue
+import com.badlogic.gdx.utils.GdxRuntimeException
 import ktx.assets.load
 import ktx.freetype.registerFreeTypeFontLoaders
 
@@ -28,6 +29,8 @@ object Assets {
     private const val smallFont = "stickman_small.ttf"
     private const val bigFont = "stickman_big.ttf"
     private const val defaultFontInternalName = "times_400.ttf"
+    private const val manaFontInternal = "mana_font_times.ttf"
+
 
     const val backgroundString = "paper"
     const val cardString = "cardBack"
@@ -77,6 +80,16 @@ object Assets {
         assetManager.finishLoadingAsset<BitmapFont>(defaultFontInternalName)
         assetManager.get<BitmapFont>(defaultFontInternalName)
     }
+    val manaFont: BitmapFont by lazy {
+        val robotoFontBigParam = FreeTypeFontLoaderParameter()
+        robotoFontBigParam.fontFileName = timesFontString
+        robotoFontBigParam.fontParameters.size = 30
+        robotoFontBigParam.fontParameters.magFilter = Texture.TextureFilter.Linear
+        robotoFontBigParam.fontParameters.minFilter = Texture.TextureFilter.Linear
+        assetManager.load<BitmapFont>(manaFontInternal, robotoFontBigParam)
+        assetManager.finishLoadingAsset<BitmapFont>(manaFontInternal)
+        assetManager.get<BitmapFont>(manaFontInternal)
+    }
 
     init {
         val resolver: FileHandleResolver = InternalFileHandleResolver()
@@ -117,8 +130,44 @@ object Assets {
                  (MyGdxGame.WIDTH / 8).toInt(),
                  (MyGdxGame.WIDTH / 8).toInt()
         )
-        println(pixmap.format.name)
         return pixmap
+    }
+    val combinedCard by lazy {
+        val cardBack = atlasSkin.getRegion("cardBack")
+        val manaIcon = atlasSkin.getRegion("mana_icon")
+
+        manaIcon.texture.textureData.prepare()
+        val manaPixmap = manaIcon.texture.textureData.consumePixmap()
+        cardBack.texture.textureData.prepare() // The api-doc says this is needed
+
+        val cardbackPixmap = cardBack.texture.textureData.consumePixmap() // Strange name, but gives the pixmap of the texture. Remember to dispose this also
+        val manaIconDimensions = cardBack.regionWidth/3
+        val combinedPixmap = Pixmap(cardBack.regionWidth, (cardBack.regionHeight+manaIconDimensions/2),
+                Pixmap.Format.RGBA8888) // Remember to dispose
+
+// We want the center point coordinates of the image region as the circle origo is at the center and drawn by the radius
+        combinedPixmap.drawPixmap(cardbackPixmap,0,manaIconDimensions/2, cardBack.regionX, cardBack.regionY,cardBack.regionWidth,cardBack.regionHeight)
+        combinedPixmap.drawPixmap(manaPixmap,manaIcon.regionX,manaIcon.regionY,manaIcon.regionWidth,manaIcon.regionHeight,cardBack.regionWidth/2-manaIconDimensions/2,0,manaIconDimensions,manaIconDimensions)
+// TADA! New combined texture
+// TADA! New combined texture
+        val tex = Texture(combinedPixmap)
+// These are not needed anymore
+        combinedPixmap.dispose()
+        cardbackPixmap.dispose()
+        manaPixmap.dispose()
+        tex
+    }
+    val outlineShader = let {
+        val vertexShader: String = Gdx.files.internal("shader/df_vertex.glsl").readString()
+        val fragmentShader: String = Gdx.files.internal("shader/outline.glsl").readString()
+        val shaderOutline = ShaderProgram(vertexShader, fragmentShader)
+//        shaderOutline = SpriteBatch.createDefaultShader()
+//        shaderOutline = Gaussian.createBlurShader(MyGdxGame.WIDTH.toInt(), MyGdxGame.HEIGHT.toInt())
+        ShaderProgram.pedantic = false
+        //shaderOutline = ShaderProgram(vertexShader, fragmentShader)
+        if (!shaderOutline.isCompiled) throw GdxRuntimeException(
+                "Couldn't compile shader: " + shaderOutline.log)
+        shaderOutline
     }
 
 }

@@ -9,7 +9,9 @@ import com.nishimura.cholessthanthree.Assets
 import com.nishimura.cholessthanthree.MyGdxGame
 
 class Bird : Enemy() {
-
+    override var maxHealth = 50
+    override var currentHealth = 50
+    override var isDead = false
     init {
         color = Color.BLACK
         val flap = Actions.forever(
