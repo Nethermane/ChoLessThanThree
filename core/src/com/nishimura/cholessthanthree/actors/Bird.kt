@@ -16,21 +16,20 @@ class Bird : Enemy(Image(Assets.atlasSkin.getDrawable(Assets.bird)).apply{
     setSize(MyGdxGame.WIDTH * 0.2f, MyGdxGame.WIDTH * 0.05f)
     setOrigin(width / 2, height / 2)
 }) {
-    override var maxHealth = 50
-    override var currentHealth by Delegates.observable(maxHealth, { property, oldValue, newValue ->
-        if(newValue <= 0) {
-            clearActions()
-            clearListeners()
-            PlayerState.targetableEntities.remove(this)
-            addAction(Actions.sequence(
-                    Actions.parallel(Actions.moveTo(MyGdxGame.WIDTH, MyGdxGame.HEIGHT, 1.5f,
-                            Interpolation.swingIn),
-                            Actions.rotateBy(3600f, 1.5f)),
-                    Actions.removeActor()))
-        }
-    })
+    override fun playExitAnimationAndActions() {
+        addAction(Actions.sequence(
+                Actions.parallel(Actions.moveTo(MyGdxGame.WIDTH, MyGdxGame.HEIGHT, 1.5f,
+                        Interpolation.swingIn),
+                        Actions.rotateBy(3600f, 1.5f)),
+                Actions.removeActor()))
+        healthBarText.isVisible = false
+        healthBarFront.isVisible = false
+        healthBarBack.isVisible = false
+    }
     override var isDead = false
     init {
+        maxHealth = 6
+        currentHealth = 6
         val flap = Actions.forever(
                 Actions.sequence(Actions.moveBy(0f, -50f, 1.5f, Interpolation.exp5),
                         Actions.moveBy(0f, 50f, 1.5f)))
