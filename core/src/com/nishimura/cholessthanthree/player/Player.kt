@@ -15,8 +15,8 @@ import com.nishimura.cholessthanthree.MyGdxGame
 import com.nishimura.cholessthanthree.Targetable
 
 
-object Player : Actor(), Targetable,Damageable {
-    val playerAnimSize = MyGdxGame.WIDTH*0.3f
+object Player : Actor(), Targetable, Damageable {
+    val playerAnimSize = MyGdxGame.WIDTH * 0.3f
     override fun getTargetX(): Float {
         return x
     }
@@ -24,6 +24,7 @@ object Player : Actor(), Targetable,Damageable {
     override fun getTargetY(): Float {
         return y
     }
+
     override var maxHealth = 70
     override var currentHealth = maxHealth
     override var isDead = false
@@ -33,21 +34,26 @@ object Player : Actor(), Targetable,Damageable {
     private val pendingStates = ArrayList<AnimState>()
     var entered = false
     val idleTexture = Assets.atlas.findRegion(Assets.character)
-    fun executeStates(states: List<AnimState>, target:Targetable?, clear:Boolean = false) {
-        if(clear) {
+    fun executeStates(states: List<AnimState>, target: Targetable?, clear: Boolean = false) {
+        if (clear) {
             pendingStates.clear()
             clearActions()
             setPosition(0f, MyGdxGame.HEIGHT * 0.4f)
         }
-        states.forEach { it.target = target }
-        if(pendingStates.isEmpty() && states.isNotEmpty()) {
+        states.forEach {
+            it.target = target
+            //If you shallow copy a card, it will use the same AnimState, which is fine, just reset it
+            it.animTime = 0f
+        }
+        if (pendingStates.isEmpty() && states.isNotEmpty()) {
             animDirection = states.first().animDirection ?: AnimDirection.RIGHT
             addActionForAnimActionType(states.first())
             //If projectile is not null then target wont be
-            states.first().projectile?.setTarget(this,target!!)
+            states.first().projectile?.setTarget(this, target!!)
         }
         pendingStates.addAll(states)
     }
+
     var animDirection = AnimDirection.RIGHT
 
 
@@ -92,33 +98,36 @@ object Player : Actor(), Targetable,Damageable {
             }
         }
     }
+
     fun addActionForAnimActionType(animState: AnimState) {
-        when(animState.animActionType) {
-            AnimActionType.MOVE_TO_ENEMY -> addAction(Actions.moveTo(animState.target!!.getTargetX()-width,y, animState.totalDuration))
+        when (animState.animActionType) {
+            AnimActionType.MOVE_TO_ENEMY -> addAction(Actions.moveTo(animState.target!!.getTargetX() - width, y, animState.totalDuration))
             AnimActionType.MOVE_TO_REST -> addAction(Actions.moveTo(0f, MyGdxGame.HEIGHT * 0.4f, animState.totalDuration))
-            AnimActionType.NONE -> {}
+            AnimActionType.NONE -> {
+            }
         }
     }
+
     override fun draw(batch: Batch?, parentAlpha: Float) {
         batch?.color = color
         //Properly jump animations based on time if frames were to drop
 
         if (pendingStates.isNotEmpty()) {
             with(pendingStates.first()) {
-                if(this.reversed) {
+                if (this.reversed) {
                     this.anim?.animation?.playMode = PlayMode.LOOP_REVERSED
                 }
                 val frame = this.anim?.animation?.getKeyFrame(this.animTime, true)
-                when(Player.animDirection) {
-                    AnimDirection.LEFT -> batch?.draw(frame, x + width, y, -width , height)
+                when (Player.animDirection) {
+                    AnimDirection.LEFT -> batch?.draw(frame, x + width, y, -width, height)
                     AnimDirection.RIGHT -> batch?.draw(frame, x, y, width,
                             height)
                 }
                 this.anim?.animation?.playMode = PlayMode.LOOP
             }
         } else {
-            when(animDirection) {
-                AnimDirection.LEFT -> batch?.draw(idleTexture, x + width, y, -width , height)
+            when (animDirection) {
+                AnimDirection.LEFT -> batch?.draw(idleTexture, x + width, y, -width, height)
                 AnimDirection.RIGHT -> batch?.draw(idleTexture, x, y, width,
                         height)
             }
@@ -126,6 +135,6 @@ object Player : Actor(), Targetable,Damageable {
     }
 
     override fun hit(x: Float, y: Float): Boolean {
-        return  (x >= this.x && x < width+this.x && y >= this.y && y < height+this.y)
+        return (x >= this.x && x < width + this.x && y >= this.y && y < height + this.y)
     }
 }

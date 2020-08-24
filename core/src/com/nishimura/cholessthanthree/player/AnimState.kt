@@ -26,7 +26,7 @@ data class AnimState(val anim: Anim? = null, val repetitions: Int = 1,
         get() = (anim?.animation?.animationDuration ?: 0f)
     var target: Targetable? = null
     fun isDone(): Boolean = animTime >= totalDuration
-    fun getOverFlowedTime(): Float = animTime - totalDuration
+    fun getOverFlowedTime(): Float = animTime % totalDuration
 
     //Angle is in degrees
     inner class Projectile(private val projectileData: ProjectileData)

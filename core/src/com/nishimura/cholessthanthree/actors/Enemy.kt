@@ -38,16 +38,18 @@ abstract class Enemy(val image: Image) : Group(), Targetable, Damageable {
         return y + height / 2
     }
 
-    val healthBarBack = Image(Assets.atlasSkin.getRegion("health_empty")).also {
-        it.setPosition(width / 2 - healthBarWidth / 2, 0f)
-        it.setSize(healthBarWidth, healthBarHeight)
-        addActor(it)
-    }
     val healthBarFront = Image(Assets.atlasSkin.getRegion("health_full")).also {
         it.setPosition(width / 2 - healthBarWidth / 2, 0f)
         it.setSize(healthBarWidth, healthBarHeight)
         addActor(it)
     }
+
+    val healthBarBack = Image(Assets.atlasSkin.getRegion("health_empty")).also {
+        it.setPosition(width / 2 - healthBarWidth / 2, 0f)
+        it.setSize(healthBarWidth, healthBarHeight)
+        addActor(it)
+    }
+
     val healthBarText = Label("t", Label.LabelStyle(Assets.manaFont, Color.BLACK)).also {
         it.width = width
         it.setAlignment(Align.center)

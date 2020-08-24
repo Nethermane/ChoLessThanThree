@@ -55,8 +55,8 @@
               "anim": Hadouken,
               "projectileData": {
                 "class": com.nishimura.cholessthanthree.player.ProjectileData,
-                "startingXPcnt": 0.35908476953,
-                "startingYPcnt": 0.29308106054,
+                "startingXPcnt": 0.35908477343,
+                "startingYPcnt": 0.29308105468,
                 "imageString": "circle",
                 "delayPcnt": 0.75,
                 "travelDuration": 0.5,

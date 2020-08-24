@@ -28,8 +28,8 @@ class Bird : Enemy(Image(Assets.atlasSkin.getDrawable(Assets.bird)).apply{
     }
     override var isDead = false
     init {
-        maxHealth = 6
-        currentHealth = 6
+        maxHealth = 12
+        currentHealth = 12
         val flap = Actions.forever(
                 Actions.sequence(Actions.moveBy(0f, -50f, 1.5f, Interpolation.exp5),
                         Actions.moveBy(0f, 50f, 1.5f)))
